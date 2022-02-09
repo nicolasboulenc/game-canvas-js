@@ -1,5 +1,7 @@
 'use strict';
 
+import {Keyboard} from "./keyboard.js";
+
 const Animation = {
 
 	_index: 0,
@@ -244,6 +246,9 @@ const Game = {
 	when_gamepad: null,
 	when_gamepad_changed: null,
 
+	when_keyboard: null,
+	when_keyboard_changed: null,
+
 	get width() { return this._canvas.width },
 	get height() { return this._canvas.height },
 	get bounds() { return { left: 0, top: 0, right: this._canvas.width,	bottom: this._canvas.height } },
@@ -263,7 +268,7 @@ const Game = {
 		this._gamepads = Object.create(Gamepads);
 		this._gamepads.init();
 		this._gamepads.setup();
-		this._keyboard = Object.create(Keyboard);
+		this._keyboard = Keyboard.create();
 		this._keyboard.setup();
 		this._entities = [];
 		this._assets = [];
@@ -295,32 +300,21 @@ const Game = {
 
 		// inputs
 		this._gamepads.poll();
-		let state = this._gamepads.get_state(0);
-		if(state !== null) {
+		let gp_state = this._gamepads.get_state(0);
+		if(gp_state !== null) {
 			if(this.when_gamepad !== null) {
-				this.when_gamepad(state);
+				this.when_gamepad(gp_state);
 			}
-			if(this.when_gamepad_changed !== null && state._changed === true) {
-				this.when_gamepad_changed(state);
+			if(this.when_gamepad_changed !== null && gp_state._changed === true) {
+				this.when_gamepad_changed(gp_state);
 			}
 		}
 
-		// logic
-		let entities = this._entities.filter(e => e._is_deleted === false);
-
-		if(this._keyboard._changed === true) {
-
-			// if(this.stage !== null && this.stage.when_keyboard_changed !== null) {
-			// 	this.stage.when_keyboard_changed(this.keyboard.state);
-			// }
-
-			// entities.forEach(e => {
-			// 	if(e.when_keyboard_changed !== null) {
-			// 		e.when_keyboard_changed(this.keyboard.state);
-			// 	}
-			// });
-
-			this._keyboard._changed = false;
+		let kb_state = this._keyboard.get_state();
+		if(kb_state !== null) {
+			if(this.when_keyboard_changed !== null && kb_state._changed === true) {
+				this.when_keyboard_changed(kb_state);
+			}
 		}
 
 		// entities.forEach(e => {
@@ -328,6 +322,10 @@ const Game = {
 		// 		e.when_keyboard(this.keyboard.state);
 		// 	}
 		// });
+
+		// logic
+		let entities = this._entities.filter(e => e._is_deleted === false);
+
 
 		entities.forEach(e => {
 			if(e.forever !== null) {
@@ -618,29 +616,6 @@ const Gamepads = {
 	}
 };
 
-const Keyboard = {
-
-	_changed: false,
-	_state: {
-		// get [keycode]() { return (typeof this[keycode] !== "undefined" ? 1 : 0); }
-	},
-	get state() { return this._state; },
-
-	init: function() {
-
-	},
-
-	setup: function() {
-		window.addEventListener("keydown", this.on_key.bind(this));
-		window.addEventListener("keyup", this.on_key.bind(this));
-	},
-
-	on_key: function(evt) {
-		this._state[evt.code] = evt.type;
-		this._changed = true;
-	}
-}
-
 const Level = {
 
 	_game: null,
@@ -719,7 +694,8 @@ const Renderer = {
 
 		const canvas = this._ctx.canvas;
 
-		this._ctx.fillStyle = "#93bbec";
+		// this._ctx.fillStyle = "#93bbec";
+		this._ctx.fillStyle = "#black";
 		this._ctx.fillRect (0, 0, canvas.width, canvas.height);
 
 		if(this._textures.length === 0) return;
@@ -1398,4 +1374,4 @@ function Overlap(r1, r2) {
 				r2._y + r2._height < r1._y	);
 }
 
-export {Game, Level, Sprite, Tileset, Texture};
+export { Game, Level, Sprite, Tileset, Texture, Keyboard };
