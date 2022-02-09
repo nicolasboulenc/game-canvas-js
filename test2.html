@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html>
+<meta charset="utf-8">
+<head>
+    <style>
+        body { background-color: darkslategray; }
+    </style>
+</head>
+<body>
+	<!-- <script src="game.js" type="module"></script> -->
+<script type="module">
+
+import {Texture} from "./game.js";
+
+// test_texture();
+
+// async function test_texture() {
+
+// 	let tex = await Texture.load('gamepads/red.png');
+// 	console.log(tex);
+// }
+
+
+// test f
+let text = 'test f = ';
+text += '1';
+let prom = f("README.md");
+console.log(prom);
+text += '4';
+console.log(text);
+
+function f(url) {
+
+	text += '2';
+	return fetch(url)
+		.then(response => {
+			text += '5';
+			console.log(text);
+			return 12;
+		})
+	text += '3';
+}
+
+
+// // test fa
+// let text = 'test fa = ';
+// test_fa();
+
+// async function test_fa() {
+
+// 	text += '1';
+// 	let prom = fa("README.md");
+// 	console.log(prom);
+// 	text += '3';
+// 	console.log(text);
+// }
+
+// async function fa(url) {
+
+// 	text += '2';
+// 	const response = await fetch(url);
+// 	text += '4';
+// 	console.log(text);
+// 	return 12;
+// }
+
+
+
+
+</script>
+</body>
+</html>
