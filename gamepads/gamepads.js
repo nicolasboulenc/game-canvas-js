@@ -12,7 +12,7 @@ spaceship.set_position(500, 500);
 Game.start();
 
 Game.when_keyboard_changed = function(keyboard) {
-	
+
 	// console.log(keyboard);
 	spaceship.direction = 0;
 	
@@ -36,8 +36,14 @@ Game.when_keyboard_changed = function(keyboard) {
 		spaceship.set_speed(300);
 	}
 
+	// spaceship.move();
+}
+
+
+spaceship.forever = function(elapsed_time) {
 	spaceship.move();
 }
+
 
 // we have to use when_gamepad for analog sticks
 // Game.when_gamepad = function(gamepad) {

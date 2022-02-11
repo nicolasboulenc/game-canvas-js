@@ -24,8 +24,14 @@ const Keyboard = {
 	},
 
 	_on_key: function(evt) {
-		this._state[evt.code] = ( evt.type === "keydown" ? 1 : 0 );
-		this._changed = true;
+
+		const state = ( evt.type === "keydown" ? 1 : 0 );
+		if( typeof this._state[evt.code] === "undefined" || 
+			( typeof this._state[evt.code] !== "undefined" && this._state[evt.code] !== state ) ) {
+
+			this._state[evt.code] = state;
+			this._changed = true;
+		}
 	}
 }
 
