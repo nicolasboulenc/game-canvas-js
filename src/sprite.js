@@ -245,6 +245,9 @@ const Sprite = {
 
 		this._tileset = tileset;
 		this._costume_index = 0;
+		for(let i=0; i<this._tileset._columns; i++) {
+			this._costumes.push({ x: i * this._tileset._tile_width, y: 0, w: this._tileset._tile_width, h: this._tileset._tile_height});
+		}
 		return this.set_image(tileset._image_url);
 	},
 

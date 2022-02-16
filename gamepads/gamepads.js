@@ -1,6 +1,6 @@
 "use strict";
 
-import {Game, Sprite, Keyboard} from "../src/game.js";
+import { Game, Sprite } from "../src/game.js";
 
 Game.init("game_container", 800, 800);
 Game.load_tileset("red.json");
@@ -13,12 +13,32 @@ Game.start();
 
 Game.when_keyboard_changed = function(keyboard) {
 
-	// console.log(keyboard);
-	spaceship.direction = 0;
-	
 	// move ship with arrows
+	spaceship.direction = 0;
 	spaceship.set_speed(0);
-	if(keyboard.KeyW === 1) {
+	spaceship.set_costume(0);
+
+	if(keyboard.KeyW === 1 && keyboard.KeyD === 1) {
+		spaceship.direction = 45;
+		spaceship.set_speed(300);
+		spaceship.set_costume(4);
+	}
+	else if(keyboard.KeyD === 1 && keyboard.KeyS === 1) {
+		spaceship.direction = 135;
+		spaceship.set_speed(300);
+		spaceship.set_costume(4);
+	}
+	else if(keyboard.KeyS === 1 && keyboard.KeyA === 1) {
+		spaceship.direction = -135;
+		spaceship.set_speed(300);
+		spaceship.set_costume(2);
+	}
+	else if(keyboard.KeyA === 1 && keyboard.KeyW === 1) {
+		spaceship.direction = -45;
+		spaceship.set_speed(300);
+		spaceship.set_costume(2);
+	}
+	else if(keyboard.KeyW === 1) {
 		spaceship.direction = 0;
 		spaceship.set_speed(300);
 	}
@@ -26,14 +46,15 @@ Game.when_keyboard_changed = function(keyboard) {
 		spaceship.direction = 180;
 		spaceship.set_speed(300);
 	}
-
-	if(keyboard.KeyA === 1) {
+	else if(keyboard.KeyA === 1) {
 		spaceship.direction = -90;
 		spaceship.set_speed(300);
+		spaceship.set_costume(2);
 	}
 	else if(keyboard.KeyD === 1) {
 		spaceship.direction = 90;
 		spaceship.set_speed(300);
+		spaceship.set_costume(4);
 	}
 
 	// spaceship.move();
