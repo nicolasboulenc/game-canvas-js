@@ -6,23 +6,17 @@ const Keyboard = {
 	_state: { _changed: false },
 	_proxy: null,
 
-	get_state: function() {
-		this._state._changed = this._changed;
-		this._changed = false;
-		return this._proxy;
-	},
-
 	init: function() {
-		// const obj = Object.create(this);
 		this._proxy = new Proxy(this._state, Keyboard_State_Handler);
 		window.addEventListener("keydown", this._on_key.bind(this));
 		window.addEventListener("keyup", this._on_key.bind(this));
 		return this;
 	},
 
-	setup: function() {
-		// window.addEventListener("keydown", this._on_key.bind(this));
-		// window.addEventListener("keyup", this._on_key.bind(this));
+	get_state: function() {
+		this._state._changed = this._changed;
+		this._changed = false;
+		return this._proxy;
 	},
 
 	_on_key: function(evt) {
