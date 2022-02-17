@@ -269,8 +269,8 @@ const Game = {
 		this._gamepads = Object.create(Gamepads);
 		this._gamepads.init();
 		this._gamepads.setup();
-		this._keyboard = Keyboard.create();
-		this._keyboard.setup();
+		this._keyboard = Keyboard.init();
+		// this._keyboard.setup();
 		this._entities = [];
 		this._assets = [];
 		this._assets_loading = {};
@@ -399,13 +399,11 @@ const Game = {
 	get_asset: function(url, callback) {
 
 		if(typeof this._assets_loading[url] === "undefined") {
-
 			console.log(`Error: requested unknown asset ${url} !`);
 			return;
 		}
 
 		if(this._assets_loading[url] === true) {
-
 			if(typeof this._assets_listeners[url] === "undefined") {
 				this._assets_listeners[url] = [];
 			}

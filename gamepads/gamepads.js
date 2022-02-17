@@ -4,10 +4,17 @@ import { Game, Sprite } from "../src/game.js";
 
 Game.init("game_container", 800, 800);
 Game.load_tileset("red.json");
+Game.load_tileset("exhaust.json");
 
-let spaceship = Sprite.create();
+const spaceship = Sprite.create();
 spaceship.set_tileset("red.json");
 spaceship.set_position(500, 500);
+
+const exhaust = Sprite.create();
+exhaust.set_tileset("exhaust.json");
+exhaust.set_position(500, 536);
+exhaust.set_animation([0, 1, 2, 3, 4, 5], 1/15);
+
 
 Game.start();
 
@@ -62,7 +69,16 @@ Game.when_keyboard_changed = function(keyboard) {
 
 
 spaceship.forever = function(elapsed_time) {
+
 	spaceship.move();
+}
+
+
+exhaust.forever = function(elapsed_time) {
+
+	exhaust.set_x(spaceship.x);
+	exhaust.set_y(spaceship.y + 52);
+	exhaust.animate();
 }
 
 

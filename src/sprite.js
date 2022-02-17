@@ -4,50 +4,6 @@ import { Game, Animation } from "./game.js";
 
 const Sprite = {
 
-	// motion
-	_x: 0,
-	_y: 0,
-	_direction: 0,		// should be direction of travel
-	_orientation: 0,	// should be rotation of the sprite
-
-	// looks
-	_tileset: null,
-	_costumes: [],		// should use the tileset object instead?
-	_costume_index: -1,
-	_animation: null,
-	_size: 100,
-	_scale: 1,
-	_bubble: null,
-
-	// events
-	when_start: null,
-	when_clicked: null,
-
-	// control
-	forever: null,
-	when_i_start_as_a_clone: null,
-
-	// sensing
-	_mouse_down: false,
-	_mouse_x: 0,
-	_mouse_y: 0,
-
-	// other
-	_game: null,
-	_image_url: "",
-	_tileset_url: "",
-	_width: 0,
-	_height: 0,
-	_tex_u: 0,
-	_tex_v: 0,
-	_tex_s: 0,
-	_tex_t: 0,
-	_opacity: 1.0,
-	_speed: 0,
-	_acceleration: 1.0,
-	_is_visible: true,
-	_is_deleted: false,
-
 	get x() { return Math.round(this._x + this._width / 2); },
 	get y() { return Math.round(this._y + this._height / 2); },
 	get width() { return this._width; },
@@ -73,14 +29,6 @@ const Sprite = {
 		this._y = Math.round(value - this._height);
 		if(this._bubble !== null) this._update_bubble_position();
 	},
-	change_x_by: function(amount) {
-		this._x += Math.round(amount);
-		if(this._bubble !== null) this._update_bubble_position();
-	},
-	change_y_by: function(amount) {
-		this._y += Math.round(amount); 
-		if(this._bubble !== null) this._update_bubble_position();
-	},
 	set_position: function(...args) {
 		if(args.length === 1 && Sprite.isPrototypeOf(args[0]) === true) {
 			const s = args[0];
@@ -98,7 +46,6 @@ const Sprite = {
 		this._speed = value;
 	},
 	set_scale: function(scale) { this._scale = scale; },
-	change_scale_by: function(scale) { this._scale += scale; },
 
 	// point_towards: function(obj) {
 	// 	if( (typeof obj === "object") && (obj instanceof Sprite) ) {
@@ -151,6 +98,7 @@ const Sprite = {
 	},
 	// 	think(message, seconds=-1) {}
 	set_costume: function(costume_index) {
+		if(this._costumes.length === 0) return;
 		this._costume_index = costume_index % this._costumes.length;
 		this._tex_s = this._costumes[this._costume_index].x;
 		this._tex_t = this._costumes[this._costume_index].y;
@@ -208,9 +156,54 @@ const Sprite = {
 	// other
 	create: function() {
 		const obj = Object.create(this);
+
+		obj._x = 0;
+		obj._y = 0;
+		obj._direction = 0;		// should be direction of travel
+		obj._orientation = 0;	// should be rotation of the sprite
+	
+		// looks
+		obj._tileset = null;
+		obj._costumes = [];		// should use the tileset object instead?
+		obj._costume_index = -1;
+		obj._animation = null;
+		obj._size = 100;
+		obj._scale = 1;
+		obj._bubble = null;
+	
+		// events
+		obj.when_start = null;
+		obj.when_clicked = null;
+	
+		// control
+		obj.forever = null;
+		obj.when_i_start_as_a_clone = null;
+	
+		// sensing
+		obj._mouse_down = false;
+		obj._mouse_x = 0;
+		obj._mouse_y = 0;
+	
+		// other
+		obj._game = null;
+		obj._image_url = "";
+		obj._tileset_url = "";
+		obj._width = 0;
+		obj._height = 0;
+		obj._tex_u = 0;
+		obj._tex_v = 0;
+		obj._tex_s = 0;
+		obj._tex_t = 0;
+		obj._opacity = 1.0;
+		obj._speed = 0;
+		obj._acceleration = 1.0;
+		obj._is_visible = true;
+		obj._is_deleted = false;
+
 		obj._game = Game;
 		obj._game.entity_add(obj);
 		obj._animation = Animation.create();
+
 		return obj;
 	},
 
@@ -242,7 +235,6 @@ const Sprite = {
 		this._tileset_url = url;
 		const tileset = this._game.get_asset(this._tileset_url, this.set_tileset.bind(this));
 		if(tileset === null) return;
-
 		this._tileset = tileset;
 		this._costume_index = 0;
 		for(let i=0; i<this._tileset._columns; i++) {

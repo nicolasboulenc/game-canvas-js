@@ -12,15 +12,17 @@ const Keyboard = {
 		return this._proxy;
 	},
 
-	create: function() {
-		const obj = Object.create(this);
-		obj._proxy = new Proxy(this._state, Keyboard_State_Handler);
-		return obj;
+	init: function() {
+		// const obj = Object.create(this);
+		this._proxy = new Proxy(this._state, Keyboard_State_Handler);
+		window.addEventListener("keydown", this._on_key.bind(this));
+		window.addEventListener("keyup", this._on_key.bind(this));
+		return this;
 	},
 
 	setup: function() {
-		window.addEventListener("keydown", this._on_key.bind(this));
-		window.addEventListener("keyup", this._on_key.bind(this));
+		// window.addEventListener("keydown", this._on_key.bind(this));
+		// window.addEventListener("keyup", this._on_key.bind(this));
 	},
 
 	_on_key: function(evt) {
