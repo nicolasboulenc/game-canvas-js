@@ -14,7 +14,7 @@ const Game = {
 	_container: null,
 	_canvas: null,
 	_renderer: null,
-	_audio: null,
+	_sounds: null,
 	_mouse: null,
 	_gamepads: null,
 	_keyboard: null,
@@ -54,7 +54,7 @@ const Game = {
 		this._container.append(this._canvas);
 
 		this._renderer = Renderer.init(this._canvas);
-		this._audio = Sounds.init();
+		this._sounds = Sounds.init();
 		this._gamepads = Gamepads.init();
 		this._keyboard = Keyboard.init();
 		this._mouse = Mouse.init(this._canvas);
@@ -241,6 +241,24 @@ const Game = {
 			await tileset.load(url);
 			// async/await, anything could happen between these 2 lines !!!!
 			// equiv to return promise
+			this._assets_loading[url] = false;
+			if(typeof this._assets_listeners[url] !== "undefined") {
+				for(const callback of this._assets_listeners[url]) {
+					callback(url);
+				}
+			}
+		}
+	},
+
+	load_sound: async function(url) {
+
+		if(typeof this._assets_loading[url] === "undefined") {
+
+			this._assets_loading[url] = true;
+			const sound = await this._sounds.load(url);
+			// async/await, anything could happen between these 2 lines !!!!
+			// equiv to return promise
+			this._assets[url] = sound;
 			this._assets_loading[url] = false;
 			if(typeof this._assets_listeners[url] !== "undefined") {
 				for(const callback of this._assets_listeners[url]) {

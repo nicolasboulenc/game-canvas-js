@@ -10,22 +10,45 @@ const Sounds = {
 		this._volume = 100;
 		this._sounds = [];
 		this._context = new window.AudioContext();
+		document.addEventListener("mousedown", this._on_user_interact.bind(this));
+		return this;
 	},
 
-	load_sound: async function(url) {
+	load: async function(url) {
 		const sound = Sound.create();
-		await sound.load(url);
-		sound._buffer = this.context.decodeAudioData(sound._data);
 		this._sounds.push(sound);
+		await sound.load(url);
+		// async/await, anything could happen between these 2 lines !!!!
+		// equiv to return promise
+		if(this._context.state === "running") {
+			console.log("decoding audio data.")
+			sound._buffer = await this._context.decodeAudioData(sound._data);
+			// async/await, anything could happen between these 2 lines !!!!
+			// equiv to return promise
+		}
+		return sound;
 	},
 
-	play_sound: function(sound_id, duration) {
-		let sound = this.sounds.find(s => s.id === sound_id);
+	play: function(sound_id, duration) {
+		let sound = this._sounds.find(s => s._url === sound_id);
 		if(typeof sound !== "undefined") {
-			const source = this.context.createBufferSource();
-			source.buffer = sound.buffer;
-			source.connect(this.context.destination);
+			const source = this._context.createBufferSource();
+			source.buffer = sound._buffer;
+			source.connect(this._context.destination);
 			source.start(0, 0, duration);
+		}
+	},
+
+	_on_user_interact: async function() {
+		if(this._context.state === "suspended") {
+			await this._context.resume();
+			// decode all data
+			for(let sound of this._sounds) {
+				if(sound._buffer === null) {
+					console.log(`decoding ${sound._url}`);
+					sound._buffer = await this._context.decodeAudioData(sound._data);
+				}
+			}
 		}
 	},
 
@@ -45,7 +68,6 @@ const Sound = {
 
 		obj._url = "";
 		obj._is_loaded = false;
-		obj._id = 0;
 		obj._data = null;
 		obj._buffer = null;
 
@@ -55,7 +77,6 @@ const Sound = {
 	load: async function(url) {
 
 		this._url = url;
-		this._id = this.url;
 		const response = await fetch(url);
 		// async/await, anything could happen between these 2 lines !!!!
 		// equiv to return promise

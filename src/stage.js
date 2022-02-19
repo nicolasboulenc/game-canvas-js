@@ -2,17 +2,6 @@
 
 const Stage = {
 
-	_game: null,
-	_backdrops: null,
-	_backdrops_index: 0,
-	_backdrop_number: 0,
-	_backdrop_name: "",
-	_volume: 100,
-	_backdrop_fit: "default",
-	_backdrop_style: "default",
-	_backdrop_computed: null,
-	when_keyboard_changed: null,
-
 	get backdrop_number() { return this._backdrop_index + 1; },
 	get backdrop_name() { return this._backdrop_name; },
 	get volume() { return this._volume; },
@@ -21,6 +10,24 @@ const Stage = {
 		if(this._backdrop_computed !== null) {
 			this._backdrop_computed._style = this._backdrop_style;
 		}
+	},
+
+	// other
+	create: function() {
+		const obj = Object.create(this);
+
+		obj._game = null;
+		obj._backdrops = [];
+		obj._backdrops_index = 0;
+		obj._backdrop_number = 0;
+		obj._backdrop_name = "";
+		obj._volume = 100;
+		obj._backdrop_fit = "default";
+		obj._backdrop_style = "default";
+		obj._backdrop_computed = null;
+
+		this._game.stage = obj;
+		return obj;
 	},
 
 	// looks
@@ -45,18 +52,6 @@ const Stage = {
 	next_backdrop: function() {
 		this._backdrops_index = (this._backdrops_index + 1) % this._backdrops.length;
 		this._game.background = this._backdrops[this._backdrops_index];
-	},
-
-	// other
-	create: function() {
-		const obj = Object.create(this);
-		this._game.stage = obj;
-		return obj;
-	},
-
-	init: function(game) {
-		this._game = game;
-		this._backdrops = [];
 	},
 
 	load_backdrop: function(url) {

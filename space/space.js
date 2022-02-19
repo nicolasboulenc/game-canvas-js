@@ -1,20 +1,25 @@
 "use strict";
 
-import { Game, Sprite, Timer } from "../src/game.js";
+import { Game, Timer } from "../src/game.js";
 
 Game.init("game_container", 800, 800);
 Game.load_tileset("red.json");
 Game.load_tileset("exhaust.json");
 Game.load_tileset("projectiles.json");
+Game.load_sound("mixkit-short-laser-gun-shot-1670.wav");
 
 const spaceship = Game.create_sprite();
 spaceship.set_tileset("red.json");
 spaceship.set_position(500, 500);
 
-const exhaust = Game.create_sprite();
-exhaust.set_tileset("exhaust.json");
-exhaust.set_position(500, 536);
-exhaust.set_animation([0, 1, 2, 3, 4, 5], 1/15);
+const exhaust_left = Game.create_sprite();
+exhaust_left.set_tileset("exhaust.json");
+exhaust_left.set_animation([0, 1, 2, 3, 4, 5], 1/15);
+
+const exhaust_right = Game.create_sprite();
+exhaust_right.set_tileset("exhaust.json");
+exhaust_right.set_animation([0, 1, 2, 3, 4, 5], 1/15);
+
 
 const minigun_proj = [];
 for(let i=0; i<50; i++) {
@@ -36,13 +41,24 @@ spaceship.forever = function(elapsed_time) {
 
 	spaceship.move();
 
-	exhaust.set_x(spaceship.x);
-	exhaust.set_y(spaceship.y + 52);
-	exhaust.animate();
+	exhaust_left.set_x(spaceship.x - 4);
+	exhaust_left.set_y(spaceship.y + 52);
+	exhaust_left.animate();
+
+	exhaust_right.set_x(spaceship.x + 2);
+	exhaust_right.set_y(spaceship.y + 52);
+	exhaust_right.animate();
+
 
 	if(minigun_is_on === true && minigun_timer.is_up(elapsed_time) === true) {
-		minigun_proj[minigun_index].set_x(spaceship.x);
-		minigun_proj[minigun_index].set_y(spaceship.y);
+		Game._sounds.play("mixkit-short-laser-gun-shot-1670.wav", 1)
+
+		minigun_proj[minigun_index].set_x(spaceship.x - 17);
+		minigun_proj[minigun_index].set_y(spaceship.y + 24);
+		minigun_index = (minigun_index + 1) % minigun_proj.length;
+
+		minigun_proj[minigun_index].set_x(spaceship.x + 17);
+		minigun_proj[minigun_index].set_y(spaceship.y + 24);
 		minigun_index = (minigun_index + 1) % minigun_proj.length;
 	}
 
@@ -56,8 +72,8 @@ spaceship.forever = function(elapsed_time) {
 
 Game.when_mouse = function(mouse) {
 
-	spaceship.direction = 0;
-	spaceship.set_speed(0);
+	// spaceship.direction = 0;
+	// spaceship.set_speed(0);
 	spaceship.set_x(mouse.x);
 	spaceship.set_y(mouse.y);
 }
