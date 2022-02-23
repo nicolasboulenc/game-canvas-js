@@ -6,6 +6,8 @@ import { Keyboard } from "./keyboard.js";
 
 import { Sprite } from "./sprite.js";
 import { Sounds } from "./sounds.js";
+import { Background } from "./background.js";
+
 import { Renderer } from "./renderer.js";
 
 
@@ -192,6 +194,13 @@ const Game = {
 		if(typeof s !== "undefined") {
 			s.is_deleted = true;
 		}
+	},
+
+	create_background: function() {
+		const background = Background.create();
+		background._game = this;
+		this._background = background;
+		return background;
 	},
 
 	get_asset: function(url, callback) {

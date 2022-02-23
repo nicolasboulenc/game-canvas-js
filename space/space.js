@@ -2,10 +2,11 @@
 
 import { Game, Timer } from "../src/game.js";
 
-Game.init("game_container", 800, 800);
+Game.init("game_container", 800, 600);
 Game.load_tileset("red.json");
 Game.load_tileset("exhaust.json");
 Game.load_tileset("projectiles.json");
+Game.load_image("PixelBackgroundSeamless.png");
 Game.load_sound("mixkit-short-laser-gun-shot-1670.wav");
 
 const spaceship = Game.create_sprite();
@@ -34,10 +35,18 @@ let minigun_is_on = false;
 let minigun_timer = Timer.create(1/7);
 let minigun_index = 0;
 
+
+const background = Game.create_background();
+background.set_image("PixelBackgroundSeamless.png");
+background.set_fit("center");	// default, fit_horizontal, fit_vertical, stretch, center, tiled
+
+
 Game.start();
 
 
 spaceship.forever = function(elapsed_time) {
+
+	bg;
 
 	spaceship.move();
 
