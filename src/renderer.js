@@ -38,11 +38,11 @@ const Renderer = {
 		canvas.setAttribute('height', style_height * dpi);
 	},
 
-	load_texture: async function(url) {
+	load_texture: async function(url, data=null) {
 
 		let texture = Texture.create();
 		this._textures.push(texture);
-		await texture.load(url);
+		await texture.load(url, data);
 		// async/await, anything could happen between these 2 lines !!!!
 		// equiv to return promise
 		return texture;
@@ -50,10 +50,16 @@ const Renderer = {
 
 	buffer: function(sprites) {
 
-		// this.sprites = [];
+		// this._sprites = [];
 		// let visible = sprites.filter(s => s._is_visible );
 		// visible.forEach(s => { this.sprites.push(s); });
-		this._sprites = sprites.filter(s => s._is_visible );
+
+		if(this._background !== null) {
+			this._sprites = [this._background].concat( sprites.filter(s => s._is_visible) );	
+		}
+		else {
+			this._sprites = sprites.filter(s => s._is_visible);
+		}
 	},
 
 	render: function() {
@@ -69,10 +75,10 @@ const Renderer = {
 		this._ctx.imageSmoothingEnabled = false;
 		this._ctx.scale(this._scale, this._scale);
 
-		if(this._background !== null) {
-			const y_offset = Math.floor((canvas.height - (this._background.canvas.height * this._scale)) / this._scale);
-			this._ctx.drawImage(this._background.canvas, 0, y_offset);
-		}
+		// if(this._background !== null) {
+		// 	const y_offset = Math.floor((canvas.height - (this._background.canvas.height * this._scale)) / this._scale);
+		// 	this._ctx.drawImage(this._background.canvas, 0, y_offset);
+		// }
 
 		let buffer_index = 0;
 		let buffer_count = this._sprites.length;
@@ -154,6 +160,38 @@ const Renderer = {
 				tile.x, tile.y, tile.w, tile.h,
 				x, y, tile.w, tile.h);
 		});
+	},
+
+	create_tiled: function(sprite, width, height) {
+
+		// should use buffer here
+
+		let texture = this._textures.find((tex) => {
+			return tex._url === sprite._image_url;
+		});
+
+		if(typeof texture !== "undefined" && texture._is_loaded === true)
+
+		const canvas = document.createElement("canvas");
+		const ctx = canvas.getContext("2d");
+
+		canvas.width = width;
+		canvas.height = height;
+
+		const cols = Math.ceil(width / sprite._width);
+		const rows = Math.ceil(height / sprite._height);
+
+		for(let y=0; y<rows; y++) {
+			for(let x=0; x<cols; x++) {
+				ctx.drawImage( sprite._image,
+					sprite.tex_u, sprite.tex_v, sprite.tex_s, sprite.tex_t,
+					x * sprite._width, y * sprite._height, sprite._width, sprite._height );	
+			}
+		}
+
+		const data = canvas.toDataURL();
+		const texture = Texture.create();
+		this._load_texture(`${sprite._image_url+"-tiled"}`, data, "data-url");
 	}
 };
 

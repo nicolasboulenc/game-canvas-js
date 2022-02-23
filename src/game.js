@@ -21,7 +21,6 @@ const Game = {
 	_gamepads: null,
 	_keyboard: null,
 	_stage: null,
-	_background: null,
 	_entities: null,
 	_assets: null,
 	_assets_loading: null,
@@ -136,10 +135,6 @@ const Game = {
 		}
 		this.collisions();
 
-		if(this._background !== null) {
-			entities = [this._background].concat(entities);
-		}
-
 		// render
 		this._renderer.buffer(entities);
 		this._renderer.render();
@@ -199,7 +194,7 @@ const Game = {
 	create_background: function() {
 		const background = Background.create();
 		background._game = this;
-		this._background = background;
+		this._renderer._background = background;
 		return background;
 	},
 
@@ -348,12 +343,12 @@ const Texture = {
 		return obj;
 	},
 
-	load: async function(url) {
+	load: async function(url, data=null, type="image") {
 
 		this._url = url;
 		this._id = url;
 
-		if(url !== "webcam") {
+		if(type === "image") {
 			const image = new Image();
 			image.src = url;
 			await image.decode();
@@ -364,7 +359,18 @@ const Texture = {
 			this._height = image.height;
 			this._is_loaded = true;
 		}
-		else if(url === "webcam"){
+		else if(type === "data-url") {
+			const image = new Image();
+			image.src = data;
+			await image.decode();
+			// async/await, anything could happen between these 2 lines !!!!
+			// equiv to return promise
+			this._image = image;
+			this._width = image.width;
+			this._height = image.height;
+			this._is_loaded = true;
+		}
+		else if(type === "webcam") {
 			const webcam = Object.create(Webcam);
 			webcam.init();
 			await webcam.stream();

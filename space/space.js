@@ -38,15 +38,13 @@ let minigun_index = 0;
 
 const background = Game.create_background();
 background.set_image("PixelBackgroundSeamless.png");
-background.set_fit("center");	// default, fit_horizontal, fit_vertical, stretch, center, tiled
+background.set_fit("tiled");	// default, fit_horizontal, fit_vertical, stretch, center, tiled
 
 
 Game.start();
 
 
 spaceship.forever = function(elapsed_time) {
-
-	bg;
 
 	spaceship.move();
 

@@ -58,13 +58,7 @@ const Background = {
 		this._fit = fit;
 		if(this._texture === null) return;
 
-		if(fit === "default") {
-			this._x = 0;
-			this._y = 0;
-			this._width = this._texture._width;
-			this._height = this._texture._height;
-		}
-		else if(fit === "fit_horizontal") {
+		if(fit === "fit_horizontal") {
 			const ratio = this._texture._width / this._texture._height;
 			this._x = 0;
 			this._width = this._game.width;
@@ -87,6 +81,20 @@ const Background = {
 		else if(fit === "center") {
 			this._x = Math.round((this._game.width - this._texture._width) / 2);
 			this._y = Math.round((this._game.height - this._texture._height) / 2);
+			this._width = this._texture._width;
+			this._height = this._texture._height;
+		}
+		else if(fit === "tiled") {
+			this._game._renderer.create_tiled(this, this._game.width, this._game.height);
+			this._image_url += "-tiled"; 
+			this._x = 0;
+			this._y = 0;
+			this._width = this._game.width;
+			this._height = this._game.height;
+		}
+		else {	// default
+			this._x = 0;
+			this._y = 0;
 			this._width = this._texture._width;
 			this._height = this._texture._height;
 		}
