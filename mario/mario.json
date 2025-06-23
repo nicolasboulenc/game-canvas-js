@@ -1,0 +1,86 @@
+{ "frames": [
+   {
+    "filename": "000",
+    "frame": { "x": 0, "y": 0, "w": 16, "h": 32 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 16, "h": 32 },
+    "sourceSize": { "w": 16, "h": 32 },
+    "duration": 100
+   },
+   {
+    "filename": "000",
+    "frame": { "x": 16, "y": 0, "w": 16, "h": 32 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 16, "h": 32 },
+    "sourceSize": { "w": 16, "h": 32 },
+    "duration": 100
+   },
+   {
+    "filename": "000",
+    "frame": { "x": 32, "y": 0, "w": 16, "h": 32 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 16, "h": 32 },
+    "sourceSize": { "w": 16, "h": 32 },
+    "duration": 100
+   },
+   {
+    "filename": "001",
+    "frame": { "x": 48, "y": 0, "w": 16, "h": 32 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 16, "h": 32 },
+    "sourceSize": { "w": 16, "h": 32 },
+    "duration": 100
+   },
+   {
+    "filename": "002",
+    "frame": { "x": 64, "y": 0, "w": 16, "h": 32 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 16, "h": 32 },
+    "sourceSize": { "w": 16, "h": 32 },
+    "duration": 100
+   },
+   {
+    "filename": "000",
+    "frame": { "x": 80, "y": 0, "w": 16, "h": 32 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 16, "h": 32 },
+    "sourceSize": { "w": 16, "h": 32 },
+    "duration": 100
+   },
+   {
+    "filename": "000",
+    "frame": { "x": 96, "y": 0, "w": 16, "h": 32 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 16, "h": 32 },
+    "sourceSize": { "w": 16, "h": 32 },
+    "duration": 100
+   }
+ ],
+ "meta": {
+  "app": "https://www.aseprite.org/",
+  "version": "1.2.40-dev",
+  "image": "mario-big2.png",
+  "format": "RGBA8888",
+  "size": { "w": 112, "h": 32 },
+  "scale": "1",
+  "frameTags": [
+   { "name": "Stand", "from": 0, "to": 0, "direction": "forward" },
+   { "name": "Crouch", "from": 1, "to": 1, "direction": "forward" },
+   { "name": "Run", "from": 2, "to": 4, "direction": "forward" },
+   { "name": "Break", "from": 5, "to": 5, "direction": "forward" },
+   { "name": "Jump", "from": 6, "to": 6, "direction": "forward" }
+  ],
+  "layers": [
+   { "name": "Sprite Sheet", "opacity": 255, "blendMode": "normal" }
+  ],
+  "slices": [
+  ]
+ }
+}

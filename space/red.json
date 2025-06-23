@@ -1,0 +1,15 @@
+{
+    "columns":5,
+    "image":"red.png",
+    "imageheight":64,
+    "imagewidth":320,
+    "margin":0,
+    "name":"red",
+    "spacing":0,
+    "tilecount":5,
+    "tiledversion":"1.6.0",
+    "tileheight":64,
+    "tilewidth":64,
+    "type":"tileset",
+    "version":"1.6"
+}

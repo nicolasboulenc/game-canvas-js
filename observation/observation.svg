@@ -1,0 +1,225 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   width="1920"
+   height="1080"
+   viewBox="0 0 1920 1080"
+   version="1.1"
+   id="svg2546"
+   shape-rendering="crispEdges"
+   inkscape:version="1.0.1 (3bc2e813f5, 2020-09-07)"
+   sodipodi:docname="observation.svg">
+  <defs
+     id="defs2540" />
+  <sodipodi:namedview
+     id="base"
+     pagecolor="#090909"
+     bordercolor="#666666"
+     borderopacity="1.0"
+     inkscape:pageopacity="0.01176471"
+     inkscape:pageshadow="2"
+     inkscape:zoom="1.42"
+     inkscape:cx="943.22168"
+     inkscape:cy="560"
+     inkscape:document-units="px"
+     inkscape:current-layer="layer2"
+     inkscape:document-rotation="0"
+     showgrid="false"
+     units="px"
+     inkscape:showpageshadow="false"
+     borderlayer="false"
+     scale-x="1" />
+  <metadata
+     id="metadata2543">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+        <dc:title></dc:title>
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <g
+     inkscape:label="background"
+     inkscape:groupmode="layer"
+     id="background">
+    <rect
+       style="fill:#000000;fill-opacity:1;stroke:none;stroke-width:1;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+       id="rect3913"
+       width="1920"
+       height="1080"
+       x="0"
+       y="0" />
+  </g>
+  <g
+     inkscape:groupmode="layer"
+     id="layer2"
+     inkscape:label="Layer 2">
+    <g
+       id="grid"
+       style="fill:none;stroke:#001000;stroke-width:2px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1">
+      <path
+         d="M 110,745 H 1810"
+         id="h1"
+         style="stroke:#001000;stroke-opacity:1" />
+      <path
+         d="M 110,630 H 1810"
+         id="h2"
+         style="stroke:#001000;stroke-opacity:1" />
+      <path
+         d="M 110,515 H 1810"
+         id="h3"
+         style="stroke:#001000;stroke-opacity:1" />
+      <path
+         d="M 110,400 H 1810"
+         id="h4"
+         style="stroke:#001000;stroke-opacity:1" />
+      <path
+         d="M 110,285 H 1810"
+         id="h5"
+         style="stroke:#001000;stroke-opacity:1" />
+      <path
+         d="M 110,170 H 1810"
+         id="h6"
+         style="stroke:#001000;stroke-opacity:1" />
+      <path
+         d="M 240,110 V 860"
+         id="v1"
+         style="stroke:#001000;stroke-opacity:1" />
+      <path
+         d="M 370,110 V 860"
+         id="v2"
+         style="stroke:#001000;stroke-opacity:1" />
+      <path
+         d="M 500,110 V 860"
+         id="v3"
+         style="stroke:#001000;stroke-opacity:1" />
+      <path
+         d="M 630,110 V 860"
+         id="v4"
+         style="stroke:#001000;stroke-opacity:1" />
+      <path
+         d="M 760,110 V 860"
+         id="v5"
+         style="stroke:#001000;stroke-opacity:1" />
+      <path
+         d="M 890,110 V 860"
+         id="v6"
+         style="stroke:#001000;stroke-opacity:1" />
+      <path
+         d="M 1020,110 V 860"
+         id="v7"
+         style="stroke:#001000;stroke-opacity:1" />
+      <path
+         d="M 1150,110 V 860"
+         id="v8"
+         style="stroke:#001000;stroke-opacity:1" />
+      <path
+         d="M 1280,110 V 860"
+         id="v9"
+         style="stroke:#001000;stroke-opacity:1" />
+      <path
+         d="M 1410,110 V 860"
+         id="v10"
+         style="stroke:#001000;stroke-opacity:1" />
+      <path
+         d="M 1540,110 V 860"
+         id="v11"
+         style="stroke:#001000;stroke-opacity:1" />
+      <path
+         d="M 1670,110 V 860"
+         id="v12"
+         style="stroke:#001000;stroke-opacity:1" />
+    </g>
+    <g
+       id="button1">
+      <text
+         xml:space="preserve"
+         style="font-style:normal;font-weight:normal;font-size:28px;line-height:1.25;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none"
+         x="178"
+         y="208"
+         id="text3714"><tspan
+           sodipodi:role="line"
+           id="tspan3712"
+           x="178"
+           y="208"
+           style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:28px;font-family:Consolas;-inkscape-font-specification:'Consolas Bold';fill:#ffffff">RUN SAM DIAGNOSTIC</tspan></text>
+      <path
+         style="fill:none;stroke:#ffffff;stroke-width:2px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+         d="m 162,172 h -16 v 55 h 16"
+         id="left" />
+      <path
+         style="fill:none;stroke:#ffffff;stroke-width:2px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+         d="m 472,172 h 16 v 55 h -16"
+         id="right" />
+      <path
+         style="fill:none;stroke:#ffffff;stroke-width:7;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+         d="M 142,159 H 496"
+         id="top" />
+      <path
+         style="fill:none;stroke:#ffffff;stroke-width:7;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+         d="M 142,240 H 496"
+         id="bottom" />
+    </g>
+    <g
+       id="frame">
+      <text
+         xml:space="preserve"
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:40px;line-height:1.25;font-family:Consolas;-inkscape-font-specification:Consolas;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none"
+         x="106"
+         y="912"
+         id="title"><tspan
+           sodipodi:role="line"
+           id="tspan3696"
+           x="106"
+           y="912"
+           style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-family:Consolas;-inkscape-font-specification:Consolas;fill:#ffffff">SAM SELF DIAGNOTICS</tspan></text>
+      <rect
+         style="fill:none;fill-opacity:1;stroke:#ffffff;stroke-width:5;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+         id="outline"
+         width="1700"
+         height="750"
+         x="110"
+         y="110" />
+      <path
+         style="fill:none;stroke:#ffffff;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+         d="M 550,110 V 860"
+         id="split" />
+    </g>
+  </g>
+  <g
+     inkscape:groupmode="layer"
+     id="foreground"
+     inkscape:label="foreground">
+    <g
+       id="cursor"
+       style="fill:none;stroke:#ffffff;stroke-width:3;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1">
+      <circle
+         id="dot"
+         cx="0"
+         cy="0"
+         r="4"
+         style="fill:#ffffff;fill-opacity:1" />
+      <path
+         id="path3810"
+         d="M 19.696155,-3.4729636 A 20,20 0 0 0 3.4729636,-19.696155" />
+      <path
+         id="path3859"
+         d="M 3.4729636,19.696155 A 20,20 0 0 0 19.696155,3.4729636" />
+      <path
+         id="path3861"
+         d="M -19.696155,3.4729636 A 20,20 0 0 0 -3.4729636,19.696155" />
+      <path
+         id="path3863"
+         d="M -3.4729636,-19.696155 A 20,20 0 0 0 -19.696155,-3.4729636" />
+    </g>
+  </g>
+</svg>

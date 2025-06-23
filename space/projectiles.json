@@ -1,0 +1,15 @@
+{
+    "columns":9,
+    "image":"projectiles.png",
+    "imageheight":32,
+    "imagewidth":144,
+    "margin":0,
+    "name":"projectiles",
+    "spacing":0,
+    "tilecount":9,
+    "tiledversion":"1.6.0",
+    "tileheight":32,
+    "tilewidth":16,
+    "type":"tileset",
+    "version":"1.6"
+}
