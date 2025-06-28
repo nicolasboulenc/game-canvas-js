@@ -57,7 +57,8 @@ const Game = {
 		this._renderer = Renderer.init(this._canvas);
 		this._sounds = Sounds.init();
 		this._gamepads = Gamepads.init();
-		this._keyboard = Keyboard.init();
+		this._keyboard = Keyboard;
+		this._keyboard.init(window);
 		this._mouse = Mouse;
 		this._mouse.init(this._canvas);
 
@@ -100,7 +101,7 @@ const Game = {
 
 		let kb_state = this._keyboard.get_state();
 		// if(kb_state !== null) {
-			if(this.when_keyboard_changed !== null && kb_state._changed === true) {
+			if(this.when_keyboard_changed !== null && kb_state.changed === true) {
 				this.when_keyboard_changed(kb_state);
 			}
 		// }

@@ -38,7 +38,6 @@ class Mouse {
 
 	static deinit() {
 
-		this.#evt_target = evt_target
 		this.#evt_target.style.cursor = "default"
 		this.#evt_target.removeEventListener("mousemove", this.#on_move.bind(this))
 		this.#evt_target.removeEventListener("mousedown", this.#on_button.bind(this))
