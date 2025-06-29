@@ -16,7 +16,7 @@ class Mouse_State {
 		this.BB = 0;
 		this.FB = 0;
 	}
-};
+}
 
 
 class Mouse {

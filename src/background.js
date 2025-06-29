@@ -1,36 +1,33 @@
 'use strict';
 
-const Background = {
+class Background {
 
 	// other
-	create: function() {
-		const obj = Object.create(this);
+	constructor() {
 
-		obj._x = 0;
-		obj._y = 0;
-		obj._orientation = 0;	// should be rotation of the sprite
+		this._x = 0;
+		this._y = 0;
+		this._orientation = 0;	// should be rotation of the sprite
 
-		obj._scale = 1;
+		this._scale = 1;
 
-		obj._game = null;
-		// obj._texture = null;
-		obj._image_url = "";
-		obj._width = 0;
-		obj._height = 0;
-		obj._tex_u = 0;
-		obj._tex_v = 0;
-		obj._tex_s = 0;
-		obj._tex_t = 0;
-		obj._opacity = 1.0;
-		obj._is_visible = true;
-		obj._is_deleted = false;
+		this._game = null;
+		// this._texture = null;
+		this._image_url = "";
+		this._width = 0;
+		this._height = 0;
+		this._tex_u = 0;
+		this._tex_v = 0;
+		this._tex_s = 0;
+		this._tex_t = 0;
+		this._opacity = 1.0;
+		this._is_visible = true;
+		this._is_deleted = false;
 
-		obj._fit = "default";	// default, fit_horizontal, fit_vertical, stretch, center, tiled
+		this._fit = "default";	// default, fit_horizontal, fit_vertical, stretch, center, tiled
+	}
 
-		return obj;
-	},
-
-	set_image: function(url) {
+	set_image(url) {
 
 		this._image_url = url;
 		let texture = this._game.get_asset(this._image_url, this.set_image.bind(this));
@@ -44,9 +41,9 @@ const Background = {
 		this._tex_v = texture._height;
 
 		this.set_fit(this._fit);
-	},
+	}
 
-	set_fit: function(fit) {
+	set_fit(fit) {
 
 		this._fit = fit;
 		if(this._texture === null) return;
@@ -94,6 +91,6 @@ const Background = {
 			this._height = this._texture._height;
 		}
 	}
-};
+}
 
 export { Background };

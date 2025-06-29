@@ -2,16 +2,25 @@
 
 import { Texture } from "./game.js";
 
-const Renderer = {
+class Renderer {
 
-	_ctx: null,
-	_buffer: null,
-	_textures: null,
-	_sprites: null,
-	_background: null,
-	_scale: 1,
+	_ctx
+	_buffer
+	_textures
+	_sprites
+	_background
+	_scale
 
-	init: function(canvas) {
+	constructor() {
+		this._ctx = null
+		this._buffer = null
+		this._textures = null
+		this._sprites = null
+		this._background = null
+		this._scale = 1
+	}
+
+	init(canvas) {
 
 		this._ctx = canvas.getContext("2d");
 		const buffer_canvas = document.createElement("canvas");
@@ -23,11 +32,11 @@ const Renderer = {
 		this._sprites = [];
 
 		return this;
-	},
+	}
 
-	set_scale: function(scale) {this._scale = scale; },
+	set_scale(scale) {this._scale = scale; }
 
-	fix_dpi: function() {
+	fix_dpi() {
 
 		const canvas = this._ctx.canvas;
 		let dpi = window.devicePixelRatio;
@@ -36,19 +45,19 @@ const Renderer = {
 		//set the correct attributes for a crystal clear image!
 		canvas.setAttribute('width', style_width * dpi);
 		canvas.setAttribute('height', style_height * dpi);
-	},
+	}
 
-	load_texture: async function(url, type="image", data=null) {
+	async load_texture(url, type="image", data=null) {
 
-		let texture = Texture.create();
+		let texture = new Texture();
 		this._textures.push(texture);
 		await texture.load(url, type, data);
 		// async/await, anything could happen between these 2 lines !!!!
 		// equiv to return promise
 		return texture;
-	},
+	}
 
-	buffer: function(sprites) {
+	buffer(sprites) {
 
 		// this._sprites = [];
 		// let visible = sprites.filter(s => s._is_visible );
@@ -60,9 +69,9 @@ const Renderer = {
 		else {
 			this._sprites = sprites.filter(s => s._is_visible);
 		}
-	},
+	}
 
-	render: function() {
+	render() {
 
 		const canvas = this._ctx.canvas;
 
@@ -139,9 +148,9 @@ const Renderer = {
 			buffer_index++;
 		}
 		this._ctx.resetTransform();
-	},
+	}
 
-	render_background: function(level, tileset) {
+	render_background(level, tileset) {
 
 
 		const canvas = document.createElement("canvas");
@@ -169,9 +178,9 @@ const Renderer = {
 				tile.x, tile.y, tile.w, tile.h,
 				x, y, tile.w, tile.h);
 		});
-	},
+	}
 
-	create_tiled: function(sprite, width, height) {
+	create_tiled(sprite, width, height) {
 
 		const texture = this._textures.find((tex) => {
 			return tex._url === sprite._image_url;
@@ -202,6 +211,6 @@ const Renderer = {
 		const data = canvas.toDataURL();
 		this.load_texture(`${sprite._image_url+"-tiled"}`, "data", data);
 	}
-};
+}
 
 export { Renderer };

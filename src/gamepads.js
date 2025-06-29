@@ -1,71 +1,80 @@
 'use strict';
 
-const Gamepad_State = {
+class Gamepad_State {
 
-	_changed: false,
-	A: 0,
-	B: 0,
-	X: 0,
-	Y: 0,
-	LB: 0,
-	RB: 0,
-	LT: 0,
-	RT: 0,
-	BACK: 0,
-	START: 0,
-	LSB: 0,
-	RSB: 0,
-	DPAD_UP: 0,
-	DPAD_DOWN: 0,
-	DPAD_LEFT: 0,
-	DPAD_RIGHT: 0,
-	LSH: 0,
-	LSV: 0,
-	RSH: 0,
-	RSV: 0,
-	LS: { direction: 0, magnitude: 0 },   // direction in degres between -180 and 180, magnitude between 0 and 1
-	RS: { direction: 0, magnitude: 0 },   // direction in degres between -180 and 180, magnitude between 0 and 1
-};
+	constructor() {
+		this._changed = false
+		this.A = 0
+		this.B = 0
+		this.X = 0
+		this.Y = 0
+		this.LB = 0
+		this.RB = 0
+		this.LT = 0
+		this.RT = 0
+		this.BACK = 0
+		this.START = 0
+		this.LSB = 0
+		this.RSB = 0
+		this.DPAD_UP = 0
+		this.DPAD_DOWN = 0
+		this.DPAD_LEFT = 0
+		this.DPAD_RIGHT = 0
+		this.LSH = 0
+		this.LSV = 0
+		this.RSH = 0
+		this.RSV = 0
+		this.LS = { direction: 0, magnitude: 0 },   // direction in degres between -180 and 180, magnitude between 0 and 1
+		this.RS = { direction: 0, magnitude: 0 },   // direction in degres between -180 and 180, magnitude between 0 and 1
+	}
+}
 
 
-const Gamepads = {
+class Gamepads {
 
-	gamepads: null,
-	states: null,
-	deadzone: 0,
-	on_change: null,
+	gamepads
+	states
+	deadzone
+	on_change
 
-	init: function() {
+	constructor() {
+		this.gamepads = null
+		this.states = null
+		this.deadzone = 0
+		this.on_change = null
+	}
+
+	init() {
 		this.gamepads = [];
 		this.states = [];
 		this.deadzone = 0.17;
 		window.addEventListener("gamepadconnected", this.on_connected.bind(this), false);
 		window.addEventListener("gamepaddisconnected", this.on_disconnected.bind(this), false);
 		return this;
-	},
+	}
 
-	poll: function() {
+	poll() {
 		// according to chrome need to poll this every frame, not necessary on firefox
 		this.gamepads = [];
 		const gamepads = navigator.getGamepads();
 		for(const gamepad of gamepads) {
 			this.gamepads.push(gamepad);
 		}
-	},
+	}
 
-	on_connected: function(evt) {
+	on_connected(evt) {
 		let gamepad = evt.gamepad;
 		this.gamepads[gamepad.index] = gamepad;
-		this.states[gamepad.index] = Object.create(Gamepad_State);
-	},
+		this.states[gamepad.index] = new Gamepad_State();
+	}
 
-	on_disconnected: function(evt) {
+	on_disconnected(evt) {
 		let gamepad = evt.gamepad;
 		delete this.gamepads[gamepad.index];
 		delete this.states[gamepad.index];
-	},
+	}
 
-	_detect: function() {
+	_detect() {
 		this.gamepads.forEach(g => {
 			g.buttons.forEach( (b, i) => {
 				if(b.value !== 0) console.log("Button " + i, b);
@@ -74,9 +83,9 @@ const Gamepads = {
 				if(a < -this.deadzone || a > this.deadzone) console.log("Axis " + i, a);
 			});
 		});
-	},
+	}
 
-	get_state: function(gamepad_index) {
+	get_state(gamepad_index) {
 
 		if(typeof this.states[gamepad_index] !== "undefined") {
 
@@ -146,11 +155,11 @@ const Gamepads = {
 		else {
 			return null;
 		}
-	},
+	}
 
-	count: function() {
+	count() {
 		return this.gamepads.length;
 	}
-};
+}
 
 export { Gamepads };

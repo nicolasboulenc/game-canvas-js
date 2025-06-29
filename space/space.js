@@ -2,29 +2,30 @@
 
 import { Game, Timer } from "../src/game.js";
 
-Game.init("game_container", 800, 600);
-Game.load_tileset("red.json");
-Game.load_tileset("exhaust.json");
-Game.load_tileset("projectiles.json");
-Game.load_image("PixelBackgroundSeamless.png");
-Game.load_sound("mixkit-short-laser-gun-shot-1670.wav");
+const game = new Game()
+game.init("game_container", 800, 600);
+game.load_tileset("red.json");
+game.load_tileset("exhaust.json");
+game.load_tileset("projectiles.json");
+game.load_image("PixelBackgroundSeamless.png");
+game.load_sound("mixkit-short-laser-gun-shot-1670.wav");
 
-const spaceship = Game.create_sprite();
+const spaceship = game.create_sprite();
 spaceship.set_tileset("red.json");
 spaceship.set_position(500, 500);
 
-const exhaust_left = Game.create_sprite();
+const exhaust_left = game.create_sprite();
 exhaust_left.set_tileset("exhaust.json");
 exhaust_left.set_animation([0, 1, 2, 3, 4, 5], 1/15);
 
-const exhaust_right = Game.create_sprite();
+const exhaust_right = game.create_sprite();
 exhaust_right.set_tileset("exhaust.json");
 exhaust_right.set_animation([0, 1, 2, 3, 4, 5], 1/15);
 
 
 const minigun_proj = [];
 for(let i=0; i<50; i++) {
-	const projectile = Game.create_sprite();
+	const projectile = game.create_sprite();
 	projectile.set_tileset("projectiles.json");
 	projectile.set_direction(0);
 	projectile.set_speed(800);
@@ -32,16 +33,16 @@ for(let i=0; i<50; i++) {
 }
 
 let minigun_is_on = false;
-let minigun_timer = Timer.create(1/7);
+let minigun_timer = new Timer(1/7);
 let minigun_index = 0;
 
 
-const background = Game.create_background();
+const background = game.create_background();
 background.set_image("PixelBackgroundSeamless.png");
 background.set_fit("tiled");	// default, fit_horizontal, fit_vertical, stretch, center, tiled
 
 
-Game.start();
+game.start();
 
 
 spaceship.forever = function(elapsed_time) {
@@ -59,7 +60,7 @@ spaceship.forever = function(elapsed_time) {
 
 
 	if(minigun_is_on === true && minigun_timer.is_up(elapsed_time) === true) {
-		Game._sounds.play("mixkit-short-laser-gun-shot-1670.wav", 1)
+		game._sounds.play("mixkit-short-laser-gun-shot-1670.wav", 1)
 
 		minigun_proj[minigun_index].set_x(spaceship.x - 17);
 		minigun_proj[minigun_index].set_y(spaceship.y + 24);
@@ -78,7 +79,7 @@ spaceship.forever = function(elapsed_time) {
 }
 
 
-Game.when_mouse = function(mouse) {
+game.when_mouse = function(mouse) {
 
 	// spaceship.direction = 0;
 	// spaceship.set_speed(0);
@@ -87,7 +88,7 @@ Game.when_mouse = function(mouse) {
 }
 
 
-Game.when_mouse_changed = function(mouse) {
+game.when_mouse_changed = function(mouse) {
 
 	if(mouse.LB === 1) {
 		minigun_is_on = true;
@@ -98,7 +99,7 @@ Game.when_mouse_changed = function(mouse) {
 }
 
 
-Game.when_keyboard_changed = function(keyboard) {
+game.when_keyboard_changed = function(keyboard) {
 
 	// move ship with arrows
 	spaceship.direction = 0;
@@ -147,7 +148,7 @@ Game.when_keyboard_changed = function(keyboard) {
 }
 
 // we have to use when_gamepad for analog sticks
-Game.when_gamepad = function(gamepad) {
+game.when_gamepad = function(gamepad) {
 
 	// move ship with left stick "LS"
 	spaceship.direction = gamepad.LS.direction;

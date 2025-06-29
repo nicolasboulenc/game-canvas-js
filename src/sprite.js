@@ -67,7 +67,7 @@ const Sprite = {
 		obj._is_visible = true;
 		obj._is_deleted = false;
 
-		obj._animation = Animation.create();
+		obj._animation = new Animation();
 
 		return obj;
 	},

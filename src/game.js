@@ -11,50 +11,79 @@ import { Background } from "./background.js";
 import { Renderer } from "./renderer.js";
 
 
-const Game = {
+class Game {
 
-	_container: null,
-	_canvas: null,
-	_renderer: null,
-	_sounds: null,
-	_mouse: null,
-	_gamepads: null,
-	_keyboard: null,
-	_stage: null,
-	_entities: null,
-	_assets: null,
-	_assets_loading: null,
-	_assets_listeners: null,
-	_on_update: null,
-	_on_collision: null,
-	_collision_checks: null,
-	_timestamp: 0,
-	_frame_count: 0,
-	_elapsed_time: 0,
+	_container
+	_canvas
+	_renderer
+	_sounds
+	_mouse
+	_gamepads
+	_keyboard
+	_stage
+	_entities
+	_assets
+	_assets_loading
+	_assets_listeners
+	_on_update
+	_on_collision
+	_collision_checks
+	_timestamp
+	_frame_count
+	_elapsed_time
 
-	when_mouse: null,
-	when_mouse_changed: null,
+	when_mouse
+	when_mouse_changed
 
-	when_gamepad: null,
-	when_gamepad_changed: null,
+	when_gamepad
+	when_gamepad_changed
 
-	when_keyboard: null,
-	when_keyboard_changed: null,
+	when_keyboard
+	when_keyboard_changed
 
-	get width() { return this._canvas.width },
-	get height() { return this._canvas.height },
-	get bounds() { return { left: 0, top: 0, right: this._canvas.width,	bottom: this._canvas.height } },
-	set_size(width, height) { this._canvas.width = width; this._canvas.height = height; },
-	set_scale: function(scale) { this._renderer.set_scale(scale); },
+	get width() { return this._canvas.width }
+	get height() { return this._canvas.height }
+	get bounds() { return { left: 0, top: 0, right: this._canvas.width,	bottom: this._canvas.height } }
+	set_size(width, height) { this._canvas.width = width; this._canvas.height = height; }
+	set_scale(scale) { this._renderer.set_scale(scale); }
 
-	init: function(container_id, width=1280, height=720) {
+	constructor() {
+
+		this._container = null
+		this._canvas = null
+		this._renderer = null
+		this._sounds = null
+		this._mouse = null
+		this._gamepads = null
+		this._keyboard = null
+		this._stage = null
+		this._entities = null
+		this._assets = null
+		this._assets_loading = null
+		this._assets_listeners = null
+		this._on_update = null
+		this._on_collision = null
+		this._collision_checks = null
+		this._timestamp = 0
+		this._frame_count = 0
+		this._elapsed_time = 0
+		this.when_mouse = null
+		this.when_mouse_changed = null
+		this.when_gamepad = null
+		this.when_gamepad_changed = null
+		this.when_keyboard = null
+		this.when_keyboard_changed = null
+	}
+
+	init(container_id, width=1280, height=720) {
 
 		this._container = document.getElementById(container_id);
 		this._canvas = document.createElement("canvas");
 		this.set_size(width, height);
 		this._container.append(this._canvas);
 
-		this._renderer = Renderer.init(this._canvas);
+		this._renderer = new Renderer()
+		this._renderer.init(this._canvas);
 		this._sounds = Sounds.init();
 		this._gamepads = Gamepads.init();
 		this._keyboard = Keyboard;
@@ -68,9 +97,9 @@ const Game = {
 		this._assets_listeners = {};
 		this.on_update = null;
 		this._collision_checks = [];
-	},
+	}
 
-	start: function() {
+	start() {
 		requestAnimationFrame(this.loop.bind(this));
 
 		let entities = this._entities.filter(e => e._is_deleted === false);
@@ -79,9 +108,9 @@ const Game = {
 				e.when_start();
 			}
 		});
-	},
+	}
 
-	loop: function(timestamp=0) {
+	loop(timestamp=0) {
 
 		let elapsed_time = timestamp - this._timestamp;
 		this._elapsed_time = elapsed_time;
@@ -142,9 +171,9 @@ const Game = {
 		this._renderer.render();
 
 		let t = requestAnimationFrame(this.loop.bind(this));
-	},
+	}
 
-	collisions: function() {
+	collisions() {
 
 		this._collision_checks.forEach(c => {
 
@@ -160,20 +189,20 @@ const Game = {
 						});
 				});
 		});
-	},
+	}
 
-	buffer_clear: function() {
+	buffer_clear() {
 		this._entities = [];
-	},
+	}
 
-	create_sprite: function() {
+	create_sprite() {
 		const sprite = Sprite.create();
 		sprite._game = this;
 		this._entities.push(sprite);
 		return sprite;
-	},
+	}
 
-	clone_sprite: function(sprite) {
+	clone_sprite(sprite) {
 
 		let clone = this._entities.find(e => e.is_deleted);
 		if(typeof clone === "undefined") {
@@ -183,24 +212,24 @@ const Game = {
 		clone = Object.assign(clone, sprite);
 		clone.is_deleted = false;
 		return clone;
-	},
+	}
 
-	delete_sprite: function(sprite) {
+	delete_sprite(sprite) {
 
 		const s = this._entities.find(e => e === sprite);
 		if(typeof s !== "undefined") {
 			s.is_deleted = true;
 		}
-	},
+	}
 
-	create_background: function() {
+	create_background() {
 		const background = Background.create();
 		background._game = this;
 		this._renderer._background = background;
 		return background;
-	},
+	}
 
-	get_asset: function(url, callback) {
+	get_asset(url, callback) {
 
 		if(typeof this._assets_loading[url] === "undefined") {
 			console.log(`Error: requested unknown asset ${url} !`);
@@ -217,9 +246,9 @@ const Game = {
 		else {
 			return this._assets[url];
 		}
-	},
+	}
 
-	load_image: async function(url) {
+	async load_image(url) {
 
 		if(typeof this._assets_loading[url] === "undefined") {
 
@@ -235,14 +264,15 @@ const Game = {
 				}
 			}
 		}
-	},
+	}
 
-	load_tileset: async function(url) {
+	async load_tileset(url) {
 
 		if(typeof this._assets_loading[url] === "undefined") {
 
 			this._assets_loading[url] = true;
-			const tileset = Tileset.create();
+			const tileset = new Tileset();
+			tileset._game = this
 			this._assets[url] = tileset;
 			await tileset.load(url);
 			// async/await, anything could happen between these 2 lines !!!!
@@ -254,9 +284,9 @@ const Game = {
 				}
 			}
 		}
-	},
+	}
 
-	load_sound: async function(url) {
+	async load_sound(url) {
 
 		if(typeof this._assets_loading[url] === "undefined") {
 
@@ -273,30 +303,27 @@ const Game = {
 			}
 		}
 	}
-};
+}
 
 
-const Animation = {
+class Animation {
 
-	create: function(frames=[], interval=1/15) {
-		const obj = Object.create(this);
+	constructor(frames=[], interval=1/15) {
 
-		obj._index = 0;
-		obj._timer = 0;
-		obj._frames = frames;
-		obj._interval = interval * 1000;
-
-		return obj;
-	},
-
-	set: function(frames, interval) {
 		this._index = 0;
 		this._timer = 0;
 		this._frames = frames;
 		this._interval = interval * 1000;
-	},
+	}
 
-	get_frame: function() {
+	set(frames, interval) {
+		this._index = 0;
+		this._timer = 0;
+		this._frames = frames;
+		this._interval = interval * 1000;
+	}
+
+	get_frame() {
 		const now = Date.now();
 		if(now - this._timer > this._interval) {
 			this._timer = now;
@@ -304,21 +331,19 @@ const Animation = {
 		}
 		return this._frames[this._index];
 	}
-};
+}
 
 
-const Level = {
+class Level {
 
-	_game: null,
-	_level: null,
+	_game
+	_level
 
-	create: function() {
-		const obj = Object.create(this);
-		obj._game = Game;
-		return obj;
-	},
+	constructor() {
+		this._game = Game;
+	}
 
-	load: function(url) {
+	load(url) {
 		return fetch(url)
 			.then( resp => resp.json() )
 			.then( level => {
@@ -330,22 +355,19 @@ const Level = {
 }
 
 
-const Texture = {
+class Texture {
 
-	create: function() {
-		const obj = Object.create(this);
+	constructor() {
 
-		obj._url = "";
-		obj._image = null;
-		obj._is_loaded = false;
-		obj._id = 0;
-		obj._width = 0;
-		obj._height = 0;
+		this._url = "";
+		this._image = null;
+		this._is_loaded = false;
+		this._id = 0;
+		this._width = 0;
+		this._height = 0;
+	}
 
-		return obj;
-	},
-
-	load: async function(url, type="image", data=null) {
+	async load(url, type="image", data=null) {
 
 		this._url = url;
 		this._id = url;
@@ -387,30 +409,27 @@ const Texture = {
 
 		return this;
 	}
-};
+}
 
 
-const Tileset = {
+class Tileset {
 
-	create: function() {
-		const obj = Object.create(this);
+	constructor() {
 
-		obj._game = null;
-		obj._image_url = "";
-		obj._columns = 0;
-		obj._image_height = 0;
-		obj._image_width = 0;
-		obj._margin = 0;
-		obj._spacing = 0;
-		obj._tile_height = 0;
-		obj._tile_width = 0;
-		obj._tiles = [];
+		this._game = null;
+		this._image_url = "";
+		this._columns = 0;
+		this._image_height = 0;
+		this._image_width = 0;
+		this._margin = 0;
+		this._spacing = 0;
+		this._tile_height = 0;
+		this._tile_width = 0;
+		this._tiles = [];
+		this._game = Game;
+	}
 
-		obj._game = Game;
-		return obj;
-	},
-
-	load: async function(url) {
+	async load(url) {
 
 		const response = await fetch(url);
 		// async/await, anything could happen between these 2 lines !!!!
@@ -429,85 +448,39 @@ const Tileset = {
 		this._tiles = tileset.tiles;
 
 		await this._game.load_image(tileset.image);
-	},
+	}
 
-	get_tile: function(id) {
+	get_tile(id) {
 		const x = id % this._columns * (this._tile_width + 1) + 1;
 		const y = Math.floor(id / this._columns) * (this._tile_height + 1) + 1;
 		return { "id": id, "x": x, "y": y, "w": this._tile_width, "h": this._tile_height };
-	},
-};
-
-
-const Webcam = {
-
-	_video_element: null,
-	_devices: [],
-
-	init: function() {
-		this._video_element = document.createElement("video");
-		this._video_element.setAttribute("autoplay", true);
-		this._video_element.setAttribute("id", "webcam");
-		this._video_element.setAttribute("hidden", true);
-		document.getElementsByTagName("body")[0].appendChild(this._video_element);
-		return this;
-	},
-
-	enumerate_devices: function() {
-		return new Promise((resolve, reject) => {
-			navigator.mediaDevices.enumerateDevices()
-				.then(devices => {
-					this._devices = devices;
-					resolve(devices);
-				})
-				.catch(err => reject(err));
-		});
-	},
-
-	stream: function(device_id="") {
-		const constraints = {
-			// audio: { deviceId: {exact: this._devices[1].deviceId} },
-			// video: { deviceId: {exact: device_id} }
-			video: true
-		};
-
-		return new Promise((resolve, reject) => {
-			navigator.mediaDevices.getUserMedia(constraints)
-				.then(stream => {
-					this._video_element.srcObject = stream;
-					this._video_element.onloadedmetadata = function(e) { resolve(stream); };
-				})
-				.catch(err => reject(err));
-		});
 	}
-};
+}
 
 
+class Timer {
 
-const Timer = {
+	#acc
+	#interval
 
-	create: function(interval=1/15) {
-		const obj = Object.create(this);
+	constructor(interval=1/15) {
+		this.#acc = 0
+		this.#interval = interval * 1000
+	}
 
-		obj._acc = 0;
-		obj._interval = interval * 1000;
+	is_up(elapsed_time) {
 
-		return obj;
-	},
+		this.#acc += elapsed_time;
 
-	is_up: function(elapsed_time) {
-
-		this._acc += elapsed_time;
-
-		if(this._acc > this._interval) {
-			this._acc -= this._interval;
+		if(this.#acc > this.#interval) {
+			this.#acc -= this.#interval;
 			return true;
 		}
 		else {
 			return false;
 		}
 	}
-};
+}
 
 // function Overlap(r1, r2) {
 // 	return !(	r2._x > r1._x + r1._width ||
