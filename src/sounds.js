@@ -1,21 +1,29 @@
 'use strict';
 
-const Sounds = {
+class Sounds {
 
-	_volume: 100,
-	_sounds: null,
-	_context: null,
+	_volume
+	_sounds
+	_context
 
-	init: function() {
+	constructor() {
+
+		this._volume = 100
+		this._sounds = null
+		this._context = null
+	}
+
+	init() {
+
 		this._volume = 100;
 		this._sounds = [];
 		this._context = new window.AudioContext();
 		document.addEventListener("mousedown", this._on_user_interact.bind(this));
 		return this;
-	},
+	}
 
-	load: async function(url) {
-		const sound = Sound.create();
+	async load(url) {
+		const sound = new Sound();
 		this._sounds.push(sound);
 		await sound.load(url);
 		// async/await, anything could happen between these 2 lines !!!!
@@ -27,9 +35,9 @@ const Sounds = {
 			// equiv to return promise
 		}
 		return sound;
-	},
+	}
 
-	play: function(sound_id, duration) {
+	play(sound_id, duration) {
 		let sound = this._sounds.find(s => s._url === sound_id);
 		if(typeof sound !== "undefined") {
 			const source = this._context.createBufferSource();
@@ -37,9 +45,9 @@ const Sounds = {
 			source.connect(this._context.destination);
 			source.start(0, 0, duration);
 		}
-	},
+	}
 
-	_on_user_interact: async function() {
+	async _on_user_interact() {
 		if(this._context.state === "suspended") {
 			await this._context.resume();
 			// decode all data
@@ -50,43 +58,40 @@ const Sounds = {
 				}
 			}
 		}
-	},
-
-	start_sound: function() {},
-	stop_all_sounds: function() {},
-	change_effect_by: function() {},
-	set_effect_to: function() {},
-	change_colume_by: function() {},
-	set_volume_to: function() {}
-};
-
-
-const Sound = {
-
-	create: function() {
-		const obj = Object.create(this);
-
-		obj._url = "";
-		obj._is_loaded = false;
-		obj._data = null;
-		obj._buffer = null;
-
-		return obj;
-	},
-
-	load: async function(url) {
-
-		this._url = url;
-		const response = await fetch(url);
-		// async/await, anything could happen between these 2 lines !!!!
-		// equiv to return promise
-		this._data = await response.arrayBuffer();
-		// async/await, anything could happen between these 2 lines !!!!
-		// equiv to return promise
-		this._is_loaded = true;
-
-		return this;
 	}
-};
+
+	start_sound() {}
+	stop_all_sounds() {}
+	change_effect_by() {}
+	set_effect_to() {}
+	change_colume_by() {}
+	set_volume_to() {}
+}
+
+
+class Sound {
+
+	constructor() {
+
+		this._url = ""
+		this._is_loaded = false
+		this._data = null
+		this._buffer = null
+	}
+
+	async load(url) {
+
+		this._url = url
+		const response = await fetch(url)
+		// async/await, anything could happen between these 2 lines !!!!
+		// equiv to return promise
+		this._data = await response.arrayBuffer()
+		// async/await, anything could happen between these 2 lines !!!!
+		// equiv to return promise
+		this._is_loaded = true
+
+		return this
+	}
+}
 
 export { Sounds };

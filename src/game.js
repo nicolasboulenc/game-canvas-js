@@ -84,8 +84,10 @@ class Game {
 
 		this._renderer = new Renderer()
 		this._renderer.init(this._canvas);
-		this._sounds = Sounds.init();
-		this._gamepads = Gamepads.init();
+		this._sounds = new Sounds()
+		this._sounds.init()
+		this._gamepads = new Gamepads();
+		this._gamepads.init();
 		this._keyboard = Keyboard;
 		this._keyboard.init(window);
 		this._mouse = Mouse;
@@ -196,7 +198,7 @@ class Game {
 	}
 
 	create_sprite() {
-		const sprite = Sprite.create();
+		const sprite = new Sprite()
 		sprite._game = this;
 		this._entities.push(sprite);
 		return sprite;
@@ -223,8 +225,7 @@ class Game {
 	}
 
 	create_background() {
-		const background = Background.create();
-		background._game = this;
+		const background = new Background(this);
 		this._renderer._background = background;
 		return background;
 	}
@@ -308,47 +309,51 @@ class Game {
 
 class Animation {
 
-	constructor(frames=[], interval=1/15) {
+	index
+	timer
+	frames
+	interval
 
-		this._index = 0;
-		this._timer = 0;
-		this._frames = frames;
-		this._interval = interval * 1000;
+	constructor(frames=[], interval=1/15) {
+		this.index = 0;
+		this.timer = 0;
+		this.frames = frames;
+		this.interval = interval * 1000;
 	}
 
 	set(frames, interval) {
-		this._index = 0;
-		this._timer = 0;
-		this._frames = frames;
-		this._interval = interval * 1000;
+		this.index = 0;
+		this.timer = 0;
+		this.frames = frames;
+		this.interval = interval * 1000;
 	}
 
 	get_frame() {
 		const now = Date.now();
-		if(now - this._timer > this._interval) {
-			this._timer = now;
-			this._index = (this._index + 1) % this._frames.length;
+		if(now - this.timer > this.interval) {
+			this.timer = now;
+			this.index = (this.index + 1) % this.frames.length;
 		}
-		return this._frames[this._index];
+		return this.frames[this.index];
 	}
 }
 
 
 class Level {
 
-	_game
-	_level
+	game
+	level
 
-	constructor() {
-		this._game = Game;
+	constructor(game) {
+		this.game = game;
 	}
 
 	load(url) {
 		return fetch(url)
 			.then( resp => resp.json() )
 			.then( level => {
-				this._level = level;
-				this._game._level = level;
+				this.level = level;
+				this.game._level = level;
 			})
 			.catch(err => { console.error(err); });
 	}
@@ -357,20 +362,27 @@ class Level {
 
 class Texture {
 
+	url
+	image
+	is_loaded
+	id
+	width
+	height
+
 	constructor() {
 
-		this._url = "";
-		this._image = null;
-		this._is_loaded = false;
-		this._id = 0;
-		this._width = 0;
-		this._height = 0;
+		this.url = "";
+		this.image = null;
+		this.is_loaded = false;
+		this.id = 0;
+		this.width = 0;
+		this.height = 0;
 	}
 
 	async load(url, type="image", data=null) {
 
-		this._url = url;
-		this._id = url;
+		this.url = url;
+		this.id = url;
 
 		if(type === "image") {
 			const image = new Image();
@@ -378,10 +390,10 @@ class Texture {
 			await image.decode();
 			// async/await, anything could happen between these 2 lines !!!!
 			// equiv to return promise
-			this._image = image;
-			this._width = image.width;
-			this._height = image.height;
-			this._is_loaded = true;
+			this.image = image;
+			this.width = image.width;
+			this.height = image.height;
+			this.is_loaded = true;
 		}
 		else if(type === "data") {
 			const image = new Image();
@@ -389,22 +401,22 @@ class Texture {
 			await image.decode();
 			// async/await, anything could happen between these 2 lines !!!!
 			// equiv to return promise
-			this._image = image;
-			this._width = image.width;
-			this._height = image.height;
-			this._is_loaded = true;
+			this.image = image;
+			this.width = image.width;
+			this.height = image.height;
+			this.is_loaded = true;
 			return this;
 		}
 		else if(type === "webcam") {
-			const webcam = Object.create(Webcam);
+			const webcam = new Webcams();
 			webcam.init();
 			await webcam.stream();
 			// async/await, anything could happen between these 2 lines !!!!
 			// equiv to return promise
-			this._image = webcam._video_element;
-			this._width = webcam._video_element.videoWidth;
-			this._height = webcam._video_element.videoHeight;
-			this._is_loaded = true;
+			this.image = webcam._video_element;
+			this.width = webcam._video_element.videoWidth;
+			this.height = webcam._video_element.videoHeight;
+			this.is_loaded = true;
 		}
 
 		return this;
@@ -413,7 +425,7 @@ class Texture {
 
 
 class Tileset {
-
+	
 	constructor() {
 
 		this._game = null;

@@ -1,38 +1,35 @@
 'use strict';
 
-const Stage = {
+class Stage {
 
-	get backdrop_number() { return this._backdrop_index + 1; },
-	get backdrop_name() { return this._backdrop_name; },
-	get volume() { return this._volume; },
+	get backdrop_number() { return this._backdrop_index + 1; }
+	get backdrop_name() { return this._backdrop_name; }
+	get volume() { return this._volume; }
 	set backdrop_style(style) {
 		this._backdrop_style = style;
 		if(this._backdrop_computed !== null) {
-			this._backdrop_computed._style = this._backdrop_style;
+			this._backdrop_computed._style = this._backdrop_style
 		}
-	},
+	}
 
 	// other
-	create: function() {
-		const obj = Object.create(this);
+	constructor() {
 
-		obj._game = null;
-		obj._backdrops = [];
-		obj._backdrops_index = 0;
-		obj._backdrop_number = 0;
-		obj._backdrop_name = "";
-		obj._volume = 100;
-		obj._backdrop_fit = "default";
-		obj._backdrop_style = "default";
-		obj._backdrop_computed = null;
-
-		this._game.stage = obj;
-		return obj;
-	},
+		this._game = null;
+		this._backdrops = [];
+		this._backdrops_index = 0;
+		this._backdrop_number = 0;
+		this._backdrop_name = "";
+		this._volume = 100;
+		this._backdrop_fit = "default";
+		this._backdrop_style = "default";
+		this._backdrop_computed = null;
+		this._game.stage = this;
+	}
 
 	// looks
 	// what: "next", "previous", "random", _image_url
-	switch_backdrop_to: function(what) {
+	switch_backdrop_to(what) {
 		if(what === "next") {
 			this._backdrops_index = (this._backdrops_index + 1) % this._backdrops.length;
 		}
@@ -47,14 +44,14 @@ const Stage = {
 			if(index !== -1) this._backdrops_index = index;
 		}
 		this._game.background = this._backdrops[this._backdrops_index];
-	},
+	}
 
-	next_backdrop: function() {
+	next_backdrop() {
 		this._backdrops_index = (this._backdrops_index + 1) % this._backdrops.length;
 		this._game.background = this._backdrops[this._backdrops_index];
-	},
+	}
 
-	load_backdrop: function(url) {
+	load_backdrop(url) {
 
 		this._game.load_texture(url)
 			.then( texture => {
@@ -80,9 +77,9 @@ const Stage = {
 			.catch( err => { console.error(err); });
 
 		return this;
-	},
+	}
 
-	set_backdrop_fit: function(fit) {
+	set_backdrop_fit(fit) {
 		// fit_horizontal, fit_vertical, stretch, center
 		this._backdrop_fit = fit;
 
@@ -90,9 +87,9 @@ const Stage = {
 			this._backdrop_computed = this.compute_backdrop(fit);
 			this._game.background = this._backdrop_computed;
 		}
-	},
+	}
 
-	compute_backdrop_fit: function(fit) {
+	compute_backdrop_fit(fit) {
 		// fit_horizontal, fit_vertical, stretch, center
 		const current_backdrop = this._backdrops[this._backdrops_index];
 
@@ -150,6 +147,6 @@ const Stage = {
 
 		return new_backdrop;
 	}
-};
+}
 
 export { Stage };

@@ -87,14 +87,14 @@ class Renderer {
 		if(this._background !== null) {
 
 			let texture = this._textures.find((tex) => {
-				return tex._url === this._background._image_url;
+				return tex.url === this._background.image_url;
 			});
 
-			if(typeof texture !== "undefined" && texture._is_loaded === true) {
+			if(typeof texture !== "undefined" && texture.is_loaded === true) {
 
-				this._ctx.drawImage(texture._image,
-					this._background._tex_s, this._background._tex_t, this._background._tex_u, this._background._tex_v,
-					0, 0, this._background._width, this._background._height);
+				this._ctx.drawImage(texture.image,
+					this._background.tex_s, this._background.tex_t, this._background.tex_u, this._background.tex_v,
+					0, 0, this._background.width, this._background.height);
 			}
 		}
 
@@ -105,10 +105,10 @@ class Renderer {
 			let sprite = this._sprites[buffer_index];
 
 			let texture = this._textures.find((tex) => {
-				return tex._url === sprite._image_url;
+				return tex.url === sprite._image_url;
 			});
 
-			if(typeof texture !== "undefined" && texture._is_loaded === true) {
+			if(typeof texture !== "undefined" && texture.is_loaded === true) {
 
 				let saved_transform = this._ctx.getTransform();
 
@@ -126,7 +126,7 @@ class Renderer {
 					let flip = (sprite._style === "flip_horizontal" ? -1 : 1);
 					this._buffer.scale(flip * sprite._scale, sprite._scale);
 					flip = (sprite._style === "flip_horizontal" ? -1 : 0);
-					this._buffer.drawImage(texture._image,
+					this._buffer.drawImage(texture.image,
 						sprite._tex_s, sprite._tex_t, sprite._tex_u, sprite._tex_v,
 						flip * sprite._width, 0, sprite._width, sprite._height);
 
@@ -137,7 +137,7 @@ class Renderer {
 					this._buffer.resetTransform();
 				}
 				else {
-					this._ctx.drawImage(texture._image,
+					this._ctx.drawImage(texture.image,
 						sprite._tex_s, sprite._tex_t, sprite._tex_u, sprite._tex_v,
 						0, 0, sprite._width, sprite._height);
 				}
@@ -166,7 +166,7 @@ class Renderer {
 		this._background.fillRect (0, 0, this._background.canvas.width, this._background.canvas.height);
 
 		const texture = this._textures.find((tex) => {
-			return tex._url === tileset._image_url;
+			return tex.url === tileset._image_url;
 		});
 
 		level._level.layers[0].data.forEach((id, index) => {
@@ -174,7 +174,7 @@ class Renderer {
 			const x = (index % level._level.width) * tileset._tile_width;
 			const y = Math.floor(index / level._level.width) * tileset._tile_width;
 			const tile = tileset.get_tile(id - 1);
-			this._background.drawImage(texture._image,
+			this._background.drawImage(texture.image,
 				tile.x, tile.y, tile.w, tile.h,
 				x, y, tile.w, tile.h);
 		});
@@ -183,10 +183,10 @@ class Renderer {
 	create_tiled(sprite, width, height) {
 
 		const texture = this._textures.find((tex) => {
-			return tex._url === sprite._image_url;
+			return tex.url === sprite.image_url;
 		});
 
-		if(typeof texture === "undefined" || texture._is_loaded === false) {
+		if(typeof texture === "undefined" || texture.is_loaded === false) {
 			return;
 		}
 
@@ -197,19 +197,19 @@ class Renderer {
 		canvas.width = width;
 		canvas.height = height;
 
-		const cols = Math.ceil(width / texture._width);
-		const rows = Math.ceil(height / texture._height);
+		const cols = Math.ceil(width / texture.width);
+		const rows = Math.ceil(height / texture.height);
 
 		for(let y=0; y<rows; y++) {
 			for(let x=0; x<cols; x++) {
-				ctx.drawImage( texture._image,
-					0, 0, texture._width, texture._height,
-					x * texture._width, y * texture._height, texture._width, texture._height );
+				ctx.drawImage( texture.image,
+					0, 0, texture.width, texture.height,
+					x * texture.width, y * texture.height, texture.width, texture.height );
 			}
 		}
 
 		const data = canvas.toDataURL();
-		this.load_texture(`${sprite._image_url+"-tiled"}`, "data", data);
+		this.load_texture(`${sprite.image_url+"-tiled"}`, "data", data);
 	}
 }
 

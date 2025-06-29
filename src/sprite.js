@@ -2,87 +2,84 @@
 
 import { Animation } from "./game.js";
 
-const Sprite = {
+class Sprite {
 
-	get x() { return Math.round(this._x + this._width / 2); },
-	get y() { return Math.round(this._y + this._height / 2); },
-	get width() { return this._width; },
-	get height() { return this._height; },
+	get x() { return Math.round(this._x + this._width / 2); }
+	get y() { return Math.round(this._y + this._height / 2); }
+	get width() { return this._width; }
+	get height() { return this._height; }
 
-	get direction() { return this._direction; },
-	set direction(value) { this._direction = value; },
+	get direction() { return this._direction; }
+	set direction(value) { this._direction = value; }
 
-	get size() { return this._size; },
-	get mouse_down() { return this._mouse_down; },
-	get mouse_x() { return this._mouse_x; },
-	get mouse_y() { return this._mouse_y; },
-	get speed() { return this._speed; },
-	get acceleration() { return this._acceleration; },
-	set acceleration(value) { this._acceleration = value; },
-	get style() { return this._style; },
+	get size() { return this._size; }
+	get mouse_down() { return this._mouse_down; }
+	get mouse_x() { return this._mouse_x; }
+	get mouse_y() { return this._mouse_y; }
+	get speed() { return this._speed; }
+	get acceleration() { return this._acceleration; }
+	set acceleration(value) { this._acceleration = value; }
+	get style() { return this._style; }
 
-	create: function() {
-		const obj = Object.create(this);
+	constructor() {
 
-		obj._x = 0;
-		obj._y = 0;
-		obj._direction = 0;		// should be direction of travel
-		obj._orientation = 0;	// should be rotation of the sprite
+		this._x = 0;
+		this._y = 0;
+		this._direction = 0;		// should be direction of travel
+		this._orientation = 0;	// should be rotation of the sprite
 
 		// looks
-		obj._tileset = null;
-		obj._costumes = [];		// should use the tileset object instead?
-		obj._costume_index = -1;
-		obj._animation = null;
-		obj._size = 100;
-		obj._scale = 1;
-		obj._bubble = null;
+		this._tileset = null;
+		this._costumes = [];		// should use the tileset thisect instead?
+		this._costume_index = -1;
+		this._animation = null;
+		this._size = 100;
+		this._scale = 1;
+		this._bubble = null;
 
 		// events
-		obj.when_start = null;
-		obj.when_clicked = null;
+		this.when_start = null;
+		this.when_clicked = null;
 
 		// control
-		obj.forever = null;
-		obj.when_i_start_as_a_clone = null;
+		this.forever = null;
+		this.when_i_start_as_a_clone = null;
 
 		// sensing
-		obj._mouse_down = false;
-		obj._mouse_x = 0;
-		obj._mouse_y = 0;
+		this._mouse_down = false;
+		this._mouse_x = 0;
+		this._mouse_y = 0;
 
 		// other
-		obj._game = null;
-		obj._image_url = "";
-		obj._tileset_url = "";
-		obj._width = 0;
-		obj._height = 0;
-		obj._tex_u = 0;
-		obj._tex_v = 0;
-		obj._tex_s = 0;
-		obj._tex_t = 0;
-		obj._opacity = 1.0;
-		obj._speed = 0;
-		obj._acceleration = 1.0;
-		obj._is_visible = true;
-		obj._is_deleted = false;
+		this._game = null;
+		this._image_url = "";
+		this._tileset_url = "";
+		this._width = 0;
+		this._height = 0;
+		this._tex_u = 0;
+		this._tex_v = 0;
+		this._tex_s = 0;
+		this._tex_t = 0;
+		this._opacity = 1.0;
+		this._speed = 0;
+		this._acceleration = 1.0;
+		this._is_visible = true;
+		this._is_deleted = false;
 
-		obj._animation = new Animation();
+		this._animation = new Animation();
+	}
 
-		return obj;
-	},
-
-	set_x: function(value) {
+	set_x(value) {
 		this._x = Math.round(value - this._width / 2);
 		if(this._bubble !== null) this._update_bubble_position();
-	},
+	}
 
-	set_y: function(value) {
+	set_y(value) {
 		this._y = Math.round(value - this._height);
 		if(this._bubble !== null) this._update_bubble_position();
-	},
+	}
 
-	set_position: function(...args) {
+	set_position(...args) {
 		if(args.length === 1 && Sprite.isPrototypeOf(args[0]) === true) {
 			const s = args[0];
 			this.set_x(s.x);
@@ -94,19 +91,19 @@ const Sprite = {
 			this.set_y(args[1]);
 			if(this._bubble !== null) this._update_bubble_position();
 		}
-	},
+	}
 
-	set_speed: function(value) {
+	set_speed(value) {
 		this._speed = value;
-	},
+	}
 
-	set_scale: function(scale) {
+	set_scale(scale) {
 		this._scale = scale;
-	},
+	}
 
-	set_direction: function(direction) {
+	set_direction(direction) {
 		this._direction = direction;
-	},
+	}
 
 	// point_towards: function(obj) {
 	// 	if( (typeof obj === "object") && (obj instanceof Sprite) ) {
@@ -117,7 +114,7 @@ const Sprite = {
 	// },
 
 	// motion
-	move: function() {
+	move() {
 
 		const elapsed_time = this._game._elapsed_time;
 
@@ -127,7 +124,7 @@ const Sprite = {
 
 		this._y -= Math.sin(rad) * this._speed * this._acceleration * elapsed_time / 1000;
 		// this._y = Math.round(this._y);
-	},
+	}
 
 	// 	glide(seconds, position) {}
 	// 	glide(seconds, x, y) {}
@@ -151,15 +148,15 @@ const Sprite = {
 		}
 		this._bubble.innerHTML = message;
 		this._update_bubble_position();
-	},
+	}
 
-	_update_bubble_position: function() {
+	_update_bubble_position() {
 		this._bubble.style.top = `${this._y * this._game._renderer._scale - this._bubble.scrollHeight}px`;
 		this._bubble.style.left = `${(this._x + this._width) * this._game._renderer._scale}px`;
-	},
+	}
 
 	// 	think(message, seconds=-1) {}
-	set_costume: function(costume_index) {
+	set_costume(costume_index) {
 		if(this._costumes.length === 0) return;
 		this._costume_index = costume_index % this._costumes.length;
 		this._tex_s = this._costumes[this._costume_index].x;
@@ -168,9 +165,9 @@ const Sprite = {
 		this._tex_v = this._costumes[this._costume_index].h;
 		this._width = this._costumes[this._costume_index].w;
 		this._height = this._costumes[this._costume_index].h;
-	},
+	}
 
-	next_costume: function() {
+	next_costume() {
 		this._costume_index = (this._costume_index + 1) % this._costumes.length;
 		this._tex_s = this._costumes[this._costume_index].x;
 		this._tex_t = this._costumes[this._costume_index].y;
@@ -178,19 +175,19 @@ const Sprite = {
 		this._tex_v = this._costumes[this._costume_index].h;
 		this._width = this._costumes[this._costume_index].w;
 		this._height = this._costumes[this._costume_index].h;
-	},
+	}
 
-	set_animation: function(frames, interval) {
+	set_animation(frames, interval) {
 		this._animation.set(frames, interval);
-	},
+	}
 
-	animate: function() {
+	animate() {
 		this.set_costume(this._animation.get_frame());
-	},
+	}
 
-	set_style: function(style) {
+	set_style(style) {
 		this._style = style;
-	},
+	}
 
 	// 	switch_backdrop_to(backdrop) {}
 	// 	next_backdrop() {}
@@ -200,13 +197,13 @@ const Sprite = {
 	// 	set_effect_to(effect, value) {}
 	// 	clear_graphic_effect() {}
 
-	show: function() {
+	show() {
 		this._is_visible = true;
-	},
+	}
 
-	hide: function() {
+	hide() {
 		this._is_visible = false;
-	},
+	}
 
 	// 	go_to_layer(layer) {}
 	//  go_forward_layer(amount) {}
@@ -220,7 +217,7 @@ const Sprite = {
 	// other
 
 
-	set_image: function(url) {
+	set_image(url) {
 
 		this._image_url = url;
 		let texture = this._game.get_asset(this._image_url, this.set_image.bind(this));
@@ -241,9 +238,9 @@ const Sprite = {
 		this._y = Math.round(this._y - this._height / 2);
 		this._tex_u = this._width;
 		this._tex_v = this._height;
-	},
+	}
 
-	set_tileset: function(url) {
+	set_tileset(url) {
 
 		this._tileset_url = url;
 		const tileset = this._game.get_asset(this._tileset_url, this.set_tileset.bind(this));
@@ -254,14 +251,14 @@ const Sprite = {
 			this._costumes.push({ x: i * this._tileset._tile_width, y: 0, w: this._tileset._tile_width, h: this._tileset._tile_height});
 		}
 		return this.set_image(tileset._image_url);
-	},
+	}
 
-	is_off_screen: function() {
+	is_off_screen() {
 		return ( ( this._x + this._width < this._game.bounds.left ||
 					this._x > this._game.bounds.right ) ||
 					( this._y + this._height < this._game.bounds.top ||
 					this._y > this._game.bounds.bottom ) );
 	}
-};
+}
 
 export { Sprite };

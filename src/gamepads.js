@@ -2,31 +2,29 @@
 
 class Gamepad_State {
 
-	constructor() {
-		this._changed = false
-		this.A = 0
-		this.B = 0
-		this.X = 0
-		this.Y = 0
-		this.LB = 0
-		this.RB = 0
-		this.LT = 0
-		this.RT = 0
-		this.BACK = 0
-		this.START = 0
-		this.LSB = 0
-		this.RSB = 0
-		this.DPAD_UP = 0
-		this.DPAD_DOWN = 0
-		this.DPAD_LEFT = 0
-		this.DPAD_RIGHT = 0
-		this.LSH = 0
-		this.LSV = 0
-		this.RSH = 0
-		this.RSV = 0
-		this.LS = { direction: 0, magnitude: 0 },   // direction in degres between -180 and 180, magnitude between 0 and 1
-		this.RS = { direction: 0, magnitude: 0 },   // direction in degres between -180 and 180, magnitude between 0 and 1
-	}
+	changed = false
+	A = 0
+	B = 0
+	X = 0
+	Y = 0
+	LB = 0
+	RB = 0
+	LT = 0
+	RT = 0
+	BACK = 0
+	START = 0
+	LSB = 0
+	RSB = 0
+	DPAD_UP = 0
+	DPAD_DOWN = 0
+	DPAD_LEFT = 0
+	DPAD_RIGHT = 0
+	LSH = 0
+	LSV = 0
+	RSH = 0
+	RSV = 0
+	LS = { direction: 0, magnitude: 0 }   // direction in degres between -180 and 180, magnitude between 0 and 1
+	RS = { direction: 0, magnitude: 0 }   // direction in degres between -180 and 180, magnitude between 0 and 1
 }
 
 
@@ -37,17 +35,22 @@ class Gamepads {
 	deadzone
 	on_change
 
+	get count() { return this.gamepads.length }
+
 	constructor() {
-		this.gamepads = null
-		this.states = null
-		this.deadzone = 0
-		this.on_change = null
+		this.init()
 	}
 
 	init() {
 		this.gamepads = [];
 		this.states = [];
 		this.deadzone = 0.17;
+		window.addEventListener("gamepadconnected", this.on_connected.bind(this), false);
+		window.addEventListener("gamepaddisconnected", this.on_disconnected.bind(this), false);
+		return this;
+	}
+
+	deinit() {
 		window.addEventListener("gamepadconnected", this.on_connected.bind(this), false);
 		window.addEventListener("gamepaddisconnected", this.on_disconnected.bind(this), false);
 		return this;
@@ -60,12 +63,13 @@ class Gamepads {
 		for(const gamepad of gamepads) {
 			this.gamepads.push(gamepad);
 		}
+		return this
 	}
 
 	on_connected(evt) {
 		let gamepad = evt.gamepad;
 		this.gamepads[gamepad.index] = gamepad;
-		this.states[gamepad.index] = new Gamepad_State();
+		this.states[gamepad.index] = new Gamepad_State()
 	}
 
 	on_disconnected(evt) {
@@ -155,10 +159,6 @@ class Gamepads {
 		else {
 			return null;
 		}
-	}
-
-	count() {
-		return this.gamepads.length;
 	}
 }
 

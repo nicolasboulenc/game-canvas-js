@@ -31,15 +31,74 @@ const myobj = {
 }
 
 
-const mc = new myclass()
-console.log(mc)
+const Gamepad_State = {
 
-const me = new myext()
-console.log(me)
+	changed: false,
+	A: 0,
+	B: 0,
+	X: 0,
+	Y: 0,
+	LB: 0,
+	RB: 0,
+	LT: 0,
+	RT: 0,
+	BACK: 0,
+	START: 0,
+	LSB: 0,
+	RSB: 0,
+	DPAD_UP: 0,
+	DPAD_DOWN: 0,
+	DPAD_LEFT: 0,
+	DPAD_RIGHT: 0,
+	LSH: 0,
+	LSV: 0,
+	RSH: 0,
+	RSV: 0,
+	LS: { direction: 0, magnitude: 0 },   // direction in degres between -180 and 180, magnitude between 0 and 1
+	RS: { direction: 0, magnitude: 0 },   // direction in degres between -180 and 180, magnitude between 0 and 1
+}
 
-const mo = Object.create(myobj)
-console.log(myobj)
+class Gamepad_State2 {
 
+	changed = false
+	A = 0
+	B = 0
+	X = 0
+	Y = 0
+	LB = 0
+	RB = 0
+	LT = 0
+	RT = 0
+	BACK = 0
+	START = 0
+	LSB = 0
+	RSB = 0
+	DPAD_UP = 0
+	DPAD_DOWN = 0
+	DPAD_LEFT = 0
+	DPAD_RIGHT = 0
+	LSH = 0
+	LSV = 0
+	RSH = 0
+	RSV = 0
+	LS = { direction:0, magnitude: 0 }   // direction in degres between -180 and 180, magnitude between 0 and 1
+	RS = { direction: 0, magnitude: 0 }   // direction in degres between -180 and 180, magnitude between 0 and 1
+}
+
+
+
+// const mc = new myclass()
+// console.log(mc)
+
+// const me = new myext()
+// console.log(me)
+
+const mo = Object.create(Gamepad_State)
+console.log(mo)
+
+
+const mo2 = new Gamepad_State2()
+console.log(mo2)
 
 </script>
 </body>

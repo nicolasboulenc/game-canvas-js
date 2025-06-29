@@ -8,10 +8,12 @@ game.load_tileset("red.json");
 game.load_tileset("exhaust.json");
 game.load_tileset("projectiles.json");
 game.load_image("PixelBackgroundSeamless.png");
+game.load_image("US_p51.png");
 game.load_sound("mixkit-short-laser-gun-shot-1670.wav");
 
 const spaceship = game.create_sprite();
 spaceship.set_tileset("red.json");
+// spaceship.set_image("US_p51.png");
 spaceship.set_position(500, 500);
 
 const exhaust_left = game.create_sprite();
@@ -37,9 +39,9 @@ let minigun_timer = new Timer(1/7);
 let minigun_index = 0;
 
 
-const background = game.create_background();
-background.set_image("PixelBackgroundSeamless.png");
-background.set_fit("tiled");	// default, fit_horizontal, fit_vertical, stretch, center, tiled
+game.create_background()
+	.set_image("PixelBackgroundSeamless.png")
+	.set_fit("tiled")	// default, fit_horizontal, fit_vertical, stretch, center, tiled
 
 
 game.start();
