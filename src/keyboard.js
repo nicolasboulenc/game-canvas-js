@@ -6,7 +6,7 @@ class Keyboard {
 	static #state = { changed: false }
 	static #target = null
 
-	static init(target) {
+	static init(target=window) {
 
 		this.#target = target
 		this.#target.addEventListener("keydown", this.#on_key.bind(this))

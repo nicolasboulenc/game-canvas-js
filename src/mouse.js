@@ -26,7 +26,7 @@ class Mouse {
 	// static #prev_state = new Mouse_State()
 	static #evt_target = null
 
-	static init(evt_target) {
+	static init(evt_target=window) {
 
 		this.#evt_target = evt_target
 		this.#evt_target.style.cursor = "none"
@@ -34,6 +34,7 @@ class Mouse {
 		this.#evt_target.addEventListener("mousedown", this.#on_button.bind(this))
 		this.#evt_target.addEventListener("mouseup", this.#on_button.bind(this))
 		this.#evt_target.addEventListener("contextmenu", this.#on_context.bind(this))
+		return this
 	}
 
 	static deinit() {

@@ -30,18 +30,14 @@ class Gamepad_State {
 
 class Gamepads {
 
-	gamepads
-	states
-	deadzone
-	on_change
+	static gamepads
+	static states
+	static deadzone
+	static on_change
 
-	get count() { return this.gamepads.length }
+	static get count() { return this.gamepads.length }
 
-	constructor() {
-		this.init()
-	}
-
-	init() {
+	static init() {
 		this.gamepads = [];
 		this.states = [];
 		this.deadzone = 0.17;
@@ -50,13 +46,13 @@ class Gamepads {
 		return this;
 	}
 
-	deinit() {
+	static deinit() {
 		window.addEventListener("gamepadconnected", this.on_connected.bind(this), false);
 		window.addEventListener("gamepaddisconnected", this.on_disconnected.bind(this), false);
 		return this;
 	}
 
-	poll() {
+	static poll() {
 		// according to chrome need to poll this every frame, not necessary on firefox
 		this.gamepads = [];
 		const gamepads = navigator.getGamepads();
@@ -66,19 +62,19 @@ class Gamepads {
 		return this
 	}
 
-	on_connected(evt) {
+	static on_connected(evt) {
 		let gamepad = evt.gamepad;
 		this.gamepads[gamepad.index] = gamepad;
 		this.states[gamepad.index] = new Gamepad_State()
 	}
 
-	on_disconnected(evt) {
+	static on_disconnected(evt) {
 		let gamepad = evt.gamepad;
 		delete this.gamepads[gamepad.index];
 		delete this.states[gamepad.index];
 	}
 
-	_detect() {
+	static _detect() {
 		this.gamepads.forEach(g => {
 			g.buttons.forEach( (b, i) => {
 				if(b.value !== 0) console.log("Button " + i, b);
@@ -89,7 +85,7 @@ class Gamepads {
 		});
 	}
 
-	get_state(gamepad_index) {
+	static get_state(gamepad_index) {
 
 		if(typeof this.states[gamepad_index] !== "undefined") {
 
