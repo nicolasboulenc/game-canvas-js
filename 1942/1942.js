@@ -17,20 +17,25 @@ const app = {
 	ctx: null
 }
 
-const SPEED_MAX = 100
+const PLAYER_SPEED_MAX = 200
 const PLAYER_WIDTH = 100
-const PLAYER_HEIGHT = 100
+const PLAYER_HEIGHT = 80
 const player_entity = {
-	position: {x: PLAYER_WIDTH/2, y: PLAYER_HEIGHT/2},
+	position: {x: 200, y: 200 },
 	direction: 0,
 	speed: 0
 }
 
 const player_projectiles = []
-
+const PROJECTILE_SPEED_MAX = 400
 let gun_is_on = false
 let gun_timer = new Timer(1/7)
 let gun_index = 0
+
+const enemy_entities = []
+const enemy_projectiles = []
+const enemy_timer = new Timer(3)
+
 
 init()
 window.requestAnimationFrame(loop)
@@ -48,6 +53,15 @@ function init() {
 	inputs.gamepads = Gamepads.init()
 	inputs.keyboard = Keyboard.init(window)
 	inputs.mouse = Mouse.init(canvas)
+
+	player_entity.position.x = app.ctx.canvas.width / 2
+	player_entity.position.y = app.ctx.canvas.height - PLAYER_HEIGHT
+
+	for(let i=0; i<50; i++) {
+		player_projectiles.push({ x: 0, y: 0, damage: 1, status: "inactive" })
+	}
+
+	enemy_timer.start()
 }
 
 function loop(time_ms) {
@@ -79,31 +93,95 @@ function loop(time_ms) {
 	player_entity.position.x += Math.cos(player_entity.direction) * player_entity.speed * time_elapsed / 1000
 	player_entity.position.y += Math.sin(player_entity.direction) * player_entity.speed * time_elapsed / 1000 * -1
 
-	if(gun_is_on === true && gun_timer.is_up(time_elapsed) === true) {
+	if(gun_is_on === true && gun_timer.is_up() === true) {
 
-		// player_projectiles[gun_index].set_x(player_entity.x - 17);
-		// player_projectiles[gun_index].set_y(player_entity.y + 24);
-		// gun_index = (gun_index + 1) % player_projectiles.length;
+		player_projectiles[gun_index].x = player_entity.position.x - PLAYER_WIDTH/4 
+		player_projectiles[gun_index].y = player_entity.position.y - 24
+		player_projectiles[gun_index].status = "active"
+		gun_index = (gun_index + 1) % player_projectiles.length
 
-		// player_projectiles[gun_index].set_x(player_entity.x + 17);
-		// player_projectiles[gun_index].set_y(player_entity.y + 24);
-		// gun_index = (gun_index + 1) % player_projectiles.length;
+		player_projectiles[gun_index].x = player_entity.position.x + PLAYER_WIDTH/4
+		player_projectiles[gun_index].y = player_entity.position.y - 24
+		player_projectiles[gun_index].status = "active"
+		gun_index = (gun_index + 1) % player_projectiles.length
 	}
 
-	// for(let i=0; i<50; i++) {
-	// 	if(player_projectiles[i].is_off_screen() === false) {
-	// 		player_projectiles[i].move();
-	// 	}
-	// }
+	for(let projectile of player_projectiles) {
+		
+		if(projectile.status === "inactive") continue
+
+		if(	projectile.x >= 0 && projectile.x <= app.ctx.canvas.width &&
+			projectile.y >= 0 && projectile.y <= app.ctx.canvas.height	) {
+			projectile.y += PROJECTILE_SPEED_MAX * time_elapsed / 1000 * -1
+		}
+		else {
+			// out of screen
+			projectile.status = "inactive"
+		}
+	}
+
+	if( enemy_timer.is_up(time_elapsed) ) {
+		const enemy = { x: 0, y: 0, speed: 0, direction: -Math.PI/2, type: "standard", status: "active", life: 3 }
+		enemy.x = Math.random() * app.ctx.canvas.width
+		enemy.speed = 100
+		enemy_entities.push(enemy)
+	}
+
+	for(const enemy of enemy_entities) {
+		
+		if(enemy.status === "inactive") continue
+
+		enemy.x += Math.cos(enemy.direction) * enemy.speed * time_elapsed / 1000
+		enemy.y += Math.sin(enemy.direction) * enemy.speed * time_elapsed / 1000 * -1
+	}
+
+	for(const enemy of enemy_entities) {
+		if(enemy.status !== "inactive") {
+
+			for(const projectile of player_projectiles) {
+
+				if(projectile.status === "inactive") continue
+
+				if(	projectile.x > enemy.x - 10 && projectile.x < enemy.x + 10 && 
+					projectile.y > enemy.y - 10 && projectile.y < enemy.y + 10	) {
+					
+					enemy.life -= projectile.damage
+					projectile.status = "inactive"
+					if(enemy.life <= 0) {
+						enemy.status = "inactive"
+					}
+				}
+			}
+		}
+	}
 
 
 	// draw
-	app.ctx.clearRect(0, 0, app.ctx.canvas.width, app.ctx.canvas.height)
+	app.ctx.fillStyle = "#0af"
+	app.ctx.fillRect(0, 0, app.ctx.canvas.width, app.ctx.canvas.height)
 
 	app.ctx.fillStyle = "yellow"
+	app.ctx.fillRect(player_entity.position.x - 10/2, player_entity.position.y - PLAYER_HEIGHT/2, 10, PLAYER_HEIGHT)
 	app.ctx.fillRect(player_entity.position.x - PLAYER_WIDTH/2, player_entity.position.y - PLAYER_HEIGHT/4, PLAYER_WIDTH, 20)
-	app.ctx.fillRect(player_entity.position.x - 5/2, player_entity.position.y - PLAYER_HEIGHT/2, 10, PLAYER_HEIGHT)
 	app.ctx.fillRect(player_entity.position.x - PLAYER_WIDTH/4, player_entity.position.y + PLAYER_HEIGHT/4, PLAYER_WIDTH/2, 10)
+	app.ctx.fillStyle = "red"
+	app.ctx.fillRect(player_entity.position.x - 1, player_entity.position.y -1, 2, 2)
+
+	app.ctx.fillStyle = "orange"
+	for(let projectile of player_projectiles) {
+		if(projectile.status === "inactive") continue
+		if(	projectile.x > 0 && projectile.x < app.ctx.canvas.width &&
+			projectile.y > 0 && projectile.y < app.ctx.canvas.height	) {
+			app.ctx.fillRect(projectile.x - 2, projectile.y - 2, 4, 4)
+		}
+	}
+
+	app.ctx.fillStyle = "black"
+	for(let enemy of enemy_entities) {
+		if(enemy.status !== "inactive") {
+			app.ctx.fillRect(enemy.x - 10, enemy.y - 10, 20, 20)
+		}
+	}
 }
 
 
@@ -112,6 +190,8 @@ function when_resize(entries, observer) {
 		entry.target.width = entry.contentRect.width
 		entry.target.height = entry.contentRect.height
 	}
+	player_entity.position.x = app.ctx.canvas.width / 2
+	player_entity.position.y = app.ctx.canvas.height - PLAYER_HEIGHT
 }
 
 
@@ -137,37 +217,51 @@ function when_keyboard(keyboard) {
 	player_entity.speed = 0
 
 	if(keyboard.KeyW === 1 && keyboard.KeyD === 1) {
-		player_entity.direction = Math.PI/2
-		player_entity.speed = SPEED_MAX
+		player_entity.direction = Math.PI/4
+		player_entity.speed = PLAYER_SPEED_MAX
 	}
 	else if(keyboard.KeyD === 1 && keyboard.KeyS === 1) {
 		player_entity.direction = -Math.PI/4
-		player_entity.speed = SPEED_MAX
+		player_entity.speed = PLAYER_SPEED_MAX
 	}
 	else if(keyboard.KeyS === 1 && keyboard.KeyA === 1) {
 		player_entity.direction = -3*Math.PI/4
-		player_entity.speed = SPEED_MAX
+		player_entity.speed = PLAYER_SPEED_MAX
 	}
 	else if(keyboard.KeyA === 1 && keyboard.KeyW === 1) {
 		player_entity.direction = 3*Math.PI/4
-		player_entity.speed = SPEED_MAX
+		player_entity.speed = PLAYER_SPEED_MAX
 	}
 	else if(keyboard.KeyW === 1) {
 		player_entity.direction = Math.PI/2
-		player_entity.speed = SPEED_MAX
+		player_entity.speed = PLAYER_SPEED_MAX
 	}
 	else if(keyboard.KeyS === 1) {
 		player_entity.direction = -Math.PI/2
-		player_entity.speed = SPEED_MAX
+		player_entity.speed = PLAYER_SPEED_MAX
 	}
 	else if(keyboard.KeyA === 1) {
 		player_entity.direction = Math.PI
-		player_entity.speed = SPEED_MAX
+		player_entity.speed = PLAYER_SPEED_MAX
 	}
 	else if(keyboard.KeyD === 1) {
 		player_entity.direction = 0
-		player_entity.speed = SPEED_MAX
+		player_entity.speed = PLAYER_SPEED_MAX
 	}
+
+	if(keyboard.Space === 1) {
+		gun_is_on = true
+		if(gun_timer.is_running === false) {
+			gun_timer.start()
+			console.log("start")
+		}
+	}
+	else {
+		gun_is_on = false
+		gun_timer.stop()
+	}
+
+
 }
 
 

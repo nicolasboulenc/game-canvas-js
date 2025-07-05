@@ -29,7 +29,7 @@ class Mouse {
 	static init(evt_target=window) {
 
 		this.#evt_target = evt_target
-		this.#evt_target.style.cursor = "none"
+		// this.#evt_target.style.cursor = "none"
 		this.#evt_target.addEventListener("mousemove", this.#on_move.bind(this))
 		this.#evt_target.addEventListener("mousedown", this.#on_button.bind(this))
 		this.#evt_target.addEventListener("mouseup", this.#on_button.bind(this))

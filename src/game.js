@@ -474,22 +474,42 @@ class Timer {
 
 	#acc
 	#interval
+	#time
+	#is_running
 
 	constructor(interval=1/15) {
 		this.#acc = 0
 		this.#interval = interval * 1000
+		this.#time = performance.now()
+		this.#is_running = false
 	}
 
-	is_up(elapsed_time) {
+	get is_running() { return this.#is_running }
 
-		this.#acc += elapsed_time;
+	start() {
+		this.#time = performance.now()
+		this.#acc = this.#interval
+		this.#is_running = true
+	}
+
+	stop() {
+		this.#is_running = false
+	}
+
+	is_up() {
+
+		if(this.#is_running === false) return false
+
+		const time_elapsed = performance.now() - this.#time
+		this.#time += time_elapsed
+		this.#acc += time_elapsed
 
 		if(this.#acc > this.#interval) {
-			this.#acc -= this.#interval;
-			return true;
+			this.#acc -= this.#interval
+			return true
 		}
 		else {
-			return false;
+			return false
 		}
 	}
 }
