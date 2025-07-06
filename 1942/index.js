@@ -34,6 +34,9 @@ const enemy_projectiles = []
 const enemy_timer = new Timer(3)
 
 
+let enemy_time = 0
+let enemy_base_x = 0
+
 init()
 window.requestAnimationFrame(loop)
 
@@ -100,7 +103,8 @@ function loop(time_ms) {
 	// enemy waves
 	if( enemy_timer.is_up(time_elapsed) ) {
 		const enemy = { x: 0, y: 0, speed: 0, direction: -Math.PI/2, type: "standard", status: "active", life: 3 }
-		enemy.x = Math.random() * app.ctx.canvas.width
+		enemy_base_x = Math.random() * app.ctx.canvas.width
+		// enemy.x = Math.random() * app.ctx.canvas.width
 		enemy.speed = 100
 		enemy_entities.push(enemy)
 	}
